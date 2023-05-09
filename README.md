@@ -11,7 +11,8 @@ https://www.overleaf.com/2593458417pscsqgdpqzbg
 ### Diagram UML:
 https://drive.google.com/file/d/1yhbuji-iQKcc6W3OwzqRUG-49MCI4BR9/view?usp=sharing
 
-### Issues(Potrzebne poprawki względem grupy pierwszej):
+### Issues (Potrzebne poprawki po etapie pierwszym):
 - Brak pola klasy Field - isDameMaker.
 - Brak klasy odpowiedzialnej za GUI.
-- Brak utworzenia szkieletu programu w Intellij IDEA.
+- Brak utworzenia szkieletu klas i metod.
+- 
