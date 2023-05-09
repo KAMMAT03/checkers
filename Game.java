@@ -129,9 +129,20 @@ public class Game {
                 } else {
                     black.remove(end.getStriked().getPiece().getId());
                 }
+                end.setPiece(start.getPiece());
+                start.setPiece(null);
                 end.getStriked().setPiece(null);
             } else {
-
+                return; //w tym miejscu powinien byc komunikat, ze nie wykonano obowiazkowego bicia i gracz powinien
+                        //wybrac inne pole
+            }
+        } else {
+            if (allPossibleMoves.get(0).contains(end)){
+                end.setPiece(start.getPiece());
+                start.setPiece(null);
+            } else {
+                return; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
+                        //wybrac inne pole
             }
         }
     }
