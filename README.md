@@ -15,4 +15,4 @@ https://drive.google.com/file/d/1yhbuji-iQKcc6W3OwzqRUG-49MCI4BR9/view?usp=shari
 - Brak pola klasy Field - isDameMaker.
 - Brak klasy odpowiedzialnej za GUI.
 - Brak utworzenia szkieletu klas i metod.
-- 
+- Barak klasy "Board" odpowiedzialnej za planszę.
