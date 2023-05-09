@@ -13,7 +13,27 @@ public class Piece {
     public boolean getColor() {
         return color;
     }
+
     public boolean getIsDame() {
         return isDame;
     }
+
+   public String getSymbol(){
+        if (isDame){
+            if (color){
+                return "W";
+            }
+            else{
+                return "B";
+            }
+        }
+        else{
+            if (color){
+                return "w";
+            }
+            else{
+                return "b";
+            }
+        }
+   }
 }

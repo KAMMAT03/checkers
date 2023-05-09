@@ -8,7 +8,7 @@ public class Field {
     Piece piece;
 
 
-    public Field(int id) {
+    public Field(int id, int i, int j, Object o) {
         this.id = id;
     }
     public Field getBottomLeft() {
