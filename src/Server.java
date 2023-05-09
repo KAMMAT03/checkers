@@ -121,9 +121,9 @@ public class Server {
    }
 
    boolean CheckGameRules(Field start, Field end) {
-      // Implementuj logikę sprawdzania zasad gry tutaj
-      // Na przykład: sprawdź, czy ruch jest dozwolony, czy jest zgodny z zasadami gry w warcaby
-      // Jeśli ruch jest dozwolony, zwróć true. W przeciwnym razie zwróć false.
+      // Implementacja logiki sprawdzania zasad gry
+      // Na przykład: sprawdzenie, czy ruch jest dozwolony, czy jest zgodny z zasadami gry w warcaby
+      // Jeśli ruch jest dozwolony, zwraca true. W przeciwnym razie zwraca false.
       // Przykład:
       List<Field> possibleMoves = game.showPossibleMoves(start);
       return possibleMoves.contains(end);

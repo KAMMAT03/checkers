@@ -97,7 +97,7 @@ public class Client {
     void handleError(String errorMessage) {
         // Obsługa błędu, np. wyświetlenie komunikatu o błędzie użytkownikowi
         System.err.println("Błąd: " + errorMessage);
-        // Możesz również wyświetlić komunikat o błędzie w interfejsie użytkownika
+        // Można również wyświetlić komunikat o błędzie w interfejsie użytkownika
     }
 
 }
