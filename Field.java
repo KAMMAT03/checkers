@@ -5,8 +5,17 @@ public class Field {
     Field topRight;
     Field bottomLeft;
     Field bottomRight;
+    Field striked;
     Piece piece;
 
+
+    public Field getStriked() {
+        return striked;
+    }
+
+    public void setStriked(Field striked) {
+        this.striked = striked;
+    }
 
     public Field(int id, int i, int j, Object o) {
         this.id = id;
