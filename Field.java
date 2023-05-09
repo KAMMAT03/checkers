@@ -1,6 +1,7 @@
 public class Field {
 
-    int id;
+    int i;
+    int j;
     Boolean isOccupied = false;
     Field topLeft;
     Field topRight;
@@ -18,8 +19,9 @@ public class Field {
         this.striked = striked;
     }
 
-    public Field(int id, int i, int j, Object o) {
-        this.id = id;
+    public Field(int i, int j, Object o) {
+        this.i = i;
+        this.j = j;
     }
     public Field getBottomLeft() {
         return bottomLeft;
@@ -48,16 +50,17 @@ public class Field {
     public void setTopRight(Field topRight) {
         this.topRight = topRight;
     }
-    public int getId() {
-        return id;
+    public int getI() {
+        return i;
+    }
+    public int getJ() {
+        return j;
     }
     public Piece getPiece() {
         return piece;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
     public void setOccupied(Boolean occupied) {
         isOccupied = occupied;
     }

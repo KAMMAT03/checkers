@@ -33,7 +33,7 @@ public class Game {
                 if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
                     Piece piece = new Piece(true, i, j); //tworzenie nowego pionka białego
                     white.put(piece.getId(), piece); //dodanie pionka do listy białych pionków
-                    getFieldById(i * n / 2 + j / 2 + 1).setPiece(piece); //ustawienie pionka na planszy
+                    getFieldByIndex(i,j).setPiece(piece); //ustawienie pionka na planszy
                 }
             }
         }
@@ -42,7 +42,7 @@ public class Game {
                 if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
                     Piece piece = new Piece(false, i, j); //tworzenie nowego pionka czarnego
                     black.put(piece.getId(), piece); //dodanie pionka do listy czarnych pionków
-                    getFieldById(i * n / 2 + j / 2 + 1).setPiece(piece); //ustawienie pionka na planszy
+                    getFieldByIndex(i,j).setPiece(piece); //ustawienie pionka na planszy
                 }
             }
         }
@@ -52,7 +52,7 @@ public class Game {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
-                    board[id-1] = new Field(id, i, j, null);
+                    board[id-1] = new Field(i, j, null);
                     id++;
                 }
 
@@ -72,7 +72,7 @@ public class Game {
             System.out.print(i + 1);
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
-                    Field field = getFieldById(id);
+                    Field field = getFieldByIndex(i,j);
                     if (field.getPiece() == null) {
                         System.out.print(" .");
                     } else {
@@ -99,9 +99,9 @@ public class Game {
     }
 
 
-    public Field getFieldById(int id) {
+    public Field getFieldByIndex(int i, int j) {
         for (Field field : board) {
-            if (field.getId() == id) {
+            if (field.getI() == i && field.getJ() == j) {
                 return field;
             }
         }
@@ -162,7 +162,7 @@ public class Game {
                 end.getStriked().setPiece(null);
             } else {
                 return; //w tym miejscu powinien byc komunikat, ze nie wykonano obowiazkowego bicia i gracz powinien
-                        //wybrac inne pole
+                //wybrac inne pole
             }
         } else {
             if (allPossibleMoves.get(0).contains(end)){
@@ -170,7 +170,7 @@ public class Game {
                 start.setPiece(null);
             } else {
                 return; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
-                        //wybrac inne pole
+                //wybrac inne pole
             }
         }
     }
