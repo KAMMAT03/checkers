@@ -18,9 +18,11 @@ public class Game {
 
         // inicjalizacja planszy i pionków
         initializeBoard();
-        //initializePieces();
+        // initializePieces();
         displayBoard();
     }
+
+
 
     public static void main(String[] args) {
         Game game = new Game(10);
@@ -34,6 +36,7 @@ public class Game {
                     board[id-1] = new Field(id, i, j, null);
                     id++;
                 }
+
             }
         }
     }
@@ -61,7 +64,12 @@ public class Game {
                     System.out.print("  ");
                 }
             }
-            System.out.println(" " + (i + 1));
+            if(i+1<10) {
+                System.out.println("  " + (i + 1) +" ");
+            }
+            else {
+                System.out.println(" " +(i + 1));
+            }
         }
 
         System.out.print(" ");
@@ -162,4 +170,8 @@ public class Game {
     public void setPlayerTurn(boolean playerTurn) {
         this.playerTurn = playerTurn;
     }
+
+
+
+
 }
