@@ -11,8 +11,8 @@ public class Game {
     public Game(int n) {
         this.n = n;
         board = new Field[(n * n + 1) / 2];
-        white = new ArrayList<>();
-        black = new ArrayList<>();
+        white = new HashMap<>();
+        black = new HashMap<>();
         playerTurn = true;
         scanner = new Scanner(System.in);
 
