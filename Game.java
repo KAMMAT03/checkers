@@ -18,16 +18,35 @@ public class Game {
 
         // inicjalizacja planszy i pionków
         initializeBoard();
-        // initializePieces();
+        initializePieces();
         displayBoard();
     }
 
 
 
     public static void main(String[] args) {
-        Game game = new Game(10);
+        Game game = new Game(20);//tylko dla parzystych n
     }
-
+    private void initializePieces() {
+        for (int i = 0; i < n / 2 - 1; i++) {
+            for (int j = 0; j < n; j++) {
+                if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
+                    Piece piece = new Piece(true, i, j); //tworzenie nowego pionka białego
+                    white.put(piece.getId(), piece); //dodanie pionka do listy białych pionków
+                    getFieldById(i * n / 2 + j / 2 + 1).setPiece(piece); //ustawienie pionka na planszy
+                }
+            }
+        }
+        for (int i = n / 2 + 1; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
+                    Piece piece = new Piece(false, i, j); //tworzenie nowego pionka czarnego
+                    black.put(piece.getId(), piece); //dodanie pionka do listy czarnych pionków
+                    getFieldById(i * n / 2 + j / 2 + 1).setPiece(piece); //ustawienie pionka na planszy
+                }
+            }
+        }
+    }
     private void initializeBoard() {
         int id = 1;
         for (int i = 0; i < n; i++) {
@@ -78,6 +97,7 @@ public class Game {
         }
         System.out.println();
     }
+
 
     public Field getFieldById(int id) {
         for (Field field : board) {
