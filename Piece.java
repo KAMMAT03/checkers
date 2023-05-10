@@ -6,14 +6,14 @@ public class Piece {
     int j;
     int id;
 
-    public Piece(boolean isDame, boolean color, Field field, int i, int j) {
+    /*public Piece(boolean isDame, boolean color, Field field, int i, int j) {
         this.isDame = isDame;
         this.color = color;
         this.field = field;
         this.i = i;
         this.j = j;
 
-    }
+    }*/
 
     public Piece(boolean color, int i, int j) {
         this.color = color;
@@ -33,7 +33,7 @@ public class Piece {
         return isDame;
     }
 
-   public String getSymbol(){
+    public String getSymbol(){
         if (isDame){
             if (color){
                 return "W";
@@ -50,5 +50,5 @@ public class Piece {
                 return "b";
             }
         }
-   }
+    }
 }
