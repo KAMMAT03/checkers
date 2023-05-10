@@ -3,10 +3,11 @@ import java.util.*;
 public class Game {
 
 
-    private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
+    private boolean playerTurn = true; //określa czyja jest tura (true - białe, false - czarne)
     private Scanner scanner; //scanner do pobierania danych od użytkownika
 
     private int n; //wielkość planszy (n x n)
+    private Boolean gameOver = false;
 
     public Game(int n) {
         this.n = n;
@@ -14,7 +15,38 @@ public class Game {
         playerTurn = true;
         scanner = new Scanner(System.in);
     }
+// W trakcie tworzenia
 
+//    public void play(Board board) {
+//        int xStart;
+//        int yStart;
+//        int xEnd;
+//        int yEnd;
+//
+//        while (gameOver == false) {
+//            if (playerTurn == true) {
+//                System.out.println("Ruch białych");
+//                System.out.println("Podaj współrzędną (x) literową wybranego pionka: ");
+//                xStart = scanner.nextInt();
+//                System.out.println("Podaj współrzędną (y) numeryczną wybranego pionka: ");
+//                yStart = scanner.nextInt();
+//
+//                System.out.println("Podaj współrzędną (x) literową gdzie chcesz się ruszyć: ");
+//                xEnd = scanner.nextInt();
+//                System.out.println("Podaj współrzędną (y) numeryczną gdzie chcesz się ruszyć: : ");
+//                yEnd= scanner.nextInt();
+//
+//                move(board.getFieldByIndex(xStart,yStart), board.getFieldByIndex(xEnd,yEnd), List<List<board.getFieldByIndex(xStart,yStart)>> allPossibleMoves,board);
+//
+//
+//                playerTurn = false;
+//
+//            } else {
+//                System.out.println("Ruch czarnych");
+//                playerTurn = true;
+//            }
+//        }
+//    }
 
     public static void main(String[] args) {
         Game game = new Game(20);//tylko dla parzystych n
