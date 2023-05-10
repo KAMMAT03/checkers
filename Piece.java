@@ -22,6 +22,7 @@ public class Piece {
     }
 
     public int getId() {
+        id = i + 10*j;
         return id;
     }
 
