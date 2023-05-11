@@ -2,52 +2,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Tree<T> {
+public class Tree {
 
-    private T data = null;
+    private Field data = null;
 
-    private List<Tree<T>> children = new ArrayList<>();
-    private List<T> childrenData = new ArrayList<>();
+    private List<Tree> children = new ArrayList<>();
+    private List<Integer> childrenData = new ArrayList<>();
 
-    private Tree<T> parent = null;
+    private Tree parent = null;
 
-    public Tree(T data) {
+    public Tree(Field data) {
         this.data = data;
     }
 
-    public Tree<T> addChild(Tree<T> child) {
+    public Tree addChild(Tree child) {
         child.setParent(this);
         this.children.add(child);
-        this.childrenData.add(child.getData());
+        this.childrenData.add(child.getData().getId());
         return child;
     }
 
-    public void addChildren(List<Tree<T>> children) {
+    public void addChildren(List<Tree> children) {
         children.forEach(each -> each.setParent(this));
         this.children.addAll(children);
     }
 
-    public List<Tree<T>> getChildren() {
+    public List<Tree> getChildren() {
         return children;
     }
 
-    public List<T> getChildrenData() {
+    public List<Integer> getChildrenData() {
         return childrenData;
     }
 
-    public T getData() {
+    public Field getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Field data) {
         this.data = data;
     }
 
-    private void setParent(Tree<T> parent) {
+    private void setParent(Tree parent) {
         this.parent = parent;
     }
 
-    public Tree<T> getParent() {
+    public Tree getParent() {
         return parent;
     }
 

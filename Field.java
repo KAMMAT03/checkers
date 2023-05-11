@@ -57,6 +57,10 @@ public class Field {
         this.topRight = topRight;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getI() {
         return i;
     }

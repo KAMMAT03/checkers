@@ -52,7 +52,7 @@ public class Game {
         Game game = new Game(20);//tylko dla parzystych n
     }
 
-    void showPossibleMoves(Field start, List<Field> possibleMoves, int max, int count, Tree<Field> root) {
+    void showPossibleMoves(Field start, List<Integer> possibleMoves, int max, int count, Tree root) {
         if (start.topLeft != null) {
             checkMove(start.topLeft, start.topLeft.topLeft, possibleMoves, playerTurn, max, count, root);
         }
@@ -67,9 +67,9 @@ public class Game {
         }
     } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy. Zwraca listę referencji do pól na które możemy się poruszyć.
 
-    void checkMove(Field oneAway, Field twoAway, List<Field> possibleMoves, boolean color, int max, int count, Tree<Field> root){
+    void checkMove(Field oneAway, Field twoAway, List<Integer> possibleMoves, boolean color, int max, int count, Tree root){
         if (!oneAway.getIsOccupied() && color) {
-            possibleMoves.add(oneAway);
+            possibleMoves.add(oneAway.getId());
         } else if (twoAway != null && !twoAway.getIsOccupied()
                 && oneAway.getPiece().getColor() != playerTurn) {
             count++;
@@ -80,12 +80,12 @@ public class Game {
         }
     }
 
-    void strike(Field start, Tree<Field> parent, int max, int count){
+    void strike(Field start, Tree parent, int max, int count){
         if (start.topLeft.topLeft != null && start.topLeft.getIsOccupied()
                 && !start.topLeft.topLeft.getIsOccupied() && start.topLeft.getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree<Field> child = new Tree<>(start.topLeft.topLeft);
+            Tree child = new Tree(start.topLeft.topLeft);
             parent.addChild(child);
             strike(start.topLeft.topLeft, child, max, count);
         }
@@ -93,7 +93,7 @@ public class Game {
                 && !start.topRight.topRight.getIsOccupied() && start.topRight.getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree<Field> child = new Tree<>(start.topRight.topRight);
+            Tree child = new Tree(start.topRight.topRight);
             parent.addChild(child);
             strike(start.topRight.topRight, child, max, count);
         }
@@ -101,7 +101,7 @@ public class Game {
                 && !start.bottomLeft.bottomLeft.getIsOccupied() && start.bottomLeft.getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree<Field> child = new Tree<>(start.bottomLeft.bottomLeft);
+            Tree child = new Tree(start.bottomLeft.bottomLeft);
             parent.addChild(child);
             strike(start.bottomLeft.bottomLeft, child, max, count);
         }
@@ -109,27 +109,31 @@ public class Game {
                 && !start.bottomRight.bottomRight.getIsOccupied() && start.bottomRight.getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree<Field> child = new Tree<>(start.bottomRight.bottomRight);
+            Tree child = new Tree(start.bottomRight.bottomRight);
             parent.addChild(child);
             strike(start.bottomRight.bottomRight, child, max, count);
         }
     }
 
-    void move(Field start, List<Field> wantedMoves, Board board, Map<Integer, Piece> white, Map<Integer, Piece> black) {  // Wykonuje ruch z pola start na pole end
-        List<Field> possibleMoves = new ArrayList<>();
-        Tree<Field> root = new Tree<>(null);
+    void move(Field start, List<Integer> wantedMoves, Board board, Map<Integer, Piece> white, Map<Integer, Piece> black) {  // Wykonuje ruch z pola start na pole end
+        List<Integer> possibleMoves = new ArrayList<>();
+        List<Field> strikeFields = new ArrayList<>();
+        Tree root = new Tree(null);
         int max = 0;
         int count = 0;
         showPossibleMoves(start, possibleMoves, max, count, root);
         Field end = root.getData();
-        Tree<Field> temp = new Tree<>(root.getData());
+        Tree temp = new Tree(root.getData());
         if (max > 0 && max == wantedMoves.size()) {
-            for (Field f : wantedMoves){
-                if (!temp.getChildrenData().contains(f)) return; // zle bicie wykonane, ponownie wybrac ruch
-                int index = temp.getChildrenData().indexOf(f);
+            if (temp.getData().getId() != wantedMoves.get(0)) return; // zle bicie wykonane, ponownie wybrac ruch
+            strikeFields.add(temp.getData());
+            for (int i = 1; i < wantedMoves.size(); i++){
+                if (!temp.getChildrenData().contains(wantedMoves.get(i))) return; // zle bicie wykonane, ponownie wybrac ruch
+                int index = temp.getChildrenData().indexOf(wantedMoves.get(i));
                 temp = temp.getChildren().get(index);
+                strikeFields.add(temp.getData());
             }
-            for (Field f : wantedMoves){
+            for (Field f : strikeFields){
                 end = f;
                 end.setPiece(start.getPiece());
                 if (playerTurn){
