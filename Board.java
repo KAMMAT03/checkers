@@ -76,7 +76,7 @@ public class Board {
         return black;
     }
 
-    private void displayBoard() {
+     void displayBoard() {
         System.out.print(" ");
         for (int i = 0; i < n; i++) {
             System.out.print(" " + (char) ('A' + i));

@@ -14,7 +14,7 @@ public class Field {
     public Field(int i, int j, Object o) {
         this.i = i;
         this.j = j;
-        this.id = i + 10*j;
+        this.id = i + 100*j;
     }
 
     public Field getStriked() {
