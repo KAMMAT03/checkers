@@ -4,17 +4,21 @@ import java.util.Map;
 public class Board {
 
     private int n; //wielkość planszy (n x n)
-    private Field[] board; //tablica wszystkich pól
+    private Field[][] board; //tablica wszystkich pól
 
     private Map<Integer, Piece> white; //lista białych pionków
     private Map<Integer, Piece> black; //lista czarnych pionków
 
+    public Piece getPiece(int x, int y){
+       return board[x][y].getPiece();
+    }
+
     public Board(int n) {
         this.n = n;
-        board = new Field[n * n];
+        board = new Field[n][n];
         white = new HashMap<>();
         black = new HashMap<>();
-        // inicjalizacja planszy i pionków
+
         initializeBoard();
         initializePieces();
         displayBoard();
@@ -22,17 +26,36 @@ public class Board {
     }
 
     private void initializeBoard() {
-        int id = 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
-                    board[id - 1] = new Field(i, j, null);
-                    id++;
+                    board[i][j] = new Field(i, j, null);
                 }
+            }
+        }
 
+        // Ustawienie referencji topLeft, topRight, bottomLeft, bottomRight dla pól planszy
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] != null) {
+                    if (i > 0 && j > 0) {
+                        board[i][j].setTopLeft(board[i - 1][j - 1]);
+                    }
+                    if (i > 0 && j < n - 1) {
+                        board[i][j].setTopRight(board[i - 1][j + 1]);
+                    }
+                    if (i < n - 1 && j > 0) {
+                        board[i][j].setBottomLeft(board[i + 1][j - 1]);
+                    }
+                    if (i < n - 1 && j < n - 1) {
+                        board[i][j].setBottomRight(board[i + 1][j + 1]);
+                    }
+                }
             }
         }
     }
+
+//
 
     private void initializePieces() {
         for (int i = 0; i < n / 2 - 1; i++) {
@@ -56,15 +79,10 @@ public class Board {
     }
 
     public Field getFieldByIndex(int i, int j) {
-        for (Field field : board) {
-            if (field.getI() == i && field.getJ() == j) {
-                return field;
-            }
-        }
-        return null;
+        return board[i][j];
     }
 
-    public Field[] getBoard() {
+    public Field[][] getBoard() {
         return board;
     }
 
@@ -77,39 +95,34 @@ public class Board {
     }
 
      void displayBoard() {
-        System.out.print(" ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(" " + (char) ('A' + i));
-        }
-        System.out.println();
+         System.out.print(" ");
+         for (int i = 0; i < n; i++) {
+             System.out.print(" " + (char) ('A' + i));
+         }
+         System.out.println();
 
-        int id = 1;
-        for (int i = 0; i < n; i++) {
-            System.out.print(i + 1);
-            for (int j = 0; j < n; j++) {
-                if ((i + j) % 2 == 0) {
-                    Field field = getFieldByIndex(i, j);
-                    if (field.getPiece() == null) {
-                        System.out.print(" .");
-                    } else {
-                        System.out.print(" " + field.getPiece().getSymbol());
-                    }
-                    id++;
-                } else {
-                    System.out.print("  ");
-                }
-            }
-            if (i + 1 < 10) {
-                System.out.println("  " + (i + 1) + " ");
-            } else {
-                System.out.println(" " + (i + 1));
-            }
-        }
+         int id = 1;
 
-        System.out.print(" ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(" " + (char) ('A' + i));
-        }
-        System.out.println();
-    }
+         for (int i = 0; i < n; i++) {
+             System.out.print(i + 1);
+             for (int j = 0; j < n; j++) {
+                 if ((i + j) % 2 == 0) {
+                     Field field = getFieldByIndex(i, j);
+                     if (field.getPiece() == null) {
+                         System.out.print(" .");
+                     } else {
+                         System.out.print(" " + field.getPiece().getSymbol());
+                     }
+                 } else {
+                     System.out.print("  ");
+                 }
+             }
+             if (i + 1 < 10) {
+                 System.out.println("  " + (i + 1) + " ");
+             } else {
+                 System.out.println(" " + (i + 1));
+             }
+         }
+     }
+
 }

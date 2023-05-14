@@ -21,40 +21,65 @@ public class Game {
         scanner = new Scanner(System.in);
         play(board);
     }
-// W trakcie tworzenia
+
+
+    // in progress
+    public Boolean isAllowedToMove(int x, int y, Board board){
+        Piece piece = board.getPiece(x, y);
+        if (piece == null|| piece.getColor() != playerTurn) return false;
+        return true;
+    }
 
     public void play(Board board) {
         int xStart;
         int yStart;
+        int xMove;
+        int yMove;
+        int index;
+
         List<Integer> indexList = new ArrayList<>();
 
         while (!gameOver) {
-            boolean turn = playerTurn;
+            xMove = 0;
+
+
             if (playerTurn) {
-                System.out.println("Ruch białych");
-            } else {
-                System.out.println("Ruch czarnych");
-            }
-            System.out.println("Podaj współrzędną (x), a potem (y) wybranego pionka: ");
-            xStart = scanner.nextInt();
-            yStart = scanner.nextInt();
-            while (turn == playerTurn){
-                System.out.println("Podaj współrzędną (x), a potem (y) planowanych ruchow, a jesli koniec to x 99: ");
+                System.out.println("\nRuch białych \n");
+                System.out.println("Podaj współrzędną (x), a potem (y) wybranego pionka: \n");
+
+                xStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 64;
+                yStart = scanner.nextInt();
+
+                System.out.println("Podaj współrzędną (x), a potem (y) planowanych ruchow, a jesli koniec to wpisz 'X': \n");
+
                 while (true){
-                    int xMove = scanner.nextInt();
-                    if (xMove == 99) break;
-                    int yMove = scanner.nextInt();
-                    int index = xMove + 100 * yMove;
+
+
+                    xMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 64;
+                    yMove = scanner.nextInt();
+                    if (xMove == 24) break;
+                    index = xMove + 100 * yMove;
                     indexList.add(index);
                 }
+
                 move(board.getFieldByIndex(xStart,yStart), indexList, board, board.getWhite(), board.getBlack());
+                board.displayBoard();
+
+
+
+            } else {
+                System.out.println("Ruch czarnych");
+
+                // analogicznie dla czarnych
             }
             board.displayBoard();
+            playerTurn = !playerTurn;
+            }
         }
-    }
+
 
     public static void main(String[] args) {
-        Game game = new Game(20);//tylko dla parzystych n
+        Game game = new Game(12);//tylko dla parzystych n
     }
 
     void showPossibleMoves(Field start) {
