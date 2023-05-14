@@ -9,26 +9,37 @@ public class Game {
     private int n; //wielkość planszy (n x n)
     private Boolean gameOver = false;
     private int count;
-    private int max;
+    private int max;  // co to?
     List<Integer> possibleMoves;
     Tree root;
 
 
-    public Game(int n) {
-        this.n = n;
+    public Game() {
+
+        System.out.println("Wybierz wielkość planszy: A - Mała  B - Klasyczna C - Duża \n");
+        scanner = new Scanner(System.in);
+        switch (Character.toUpperCase(scanner.next().charAt(0))) {
+            case 'A':
+                setN(8);;
+                break;
+            case 'B':
+                setN(10);;
+                break;
+            case 'C':
+                setN(12);;
+                break;
+            default:
+                System.out.println("Niepoprawny wybór, wybieram planszę klasyczną");
+                setN(10);
+                break;
+        }
+
         Board board = new Board(n);
         playerTurn = true;
         scanner = new Scanner(System.in);
         play(board);
     }
 
-
-    // in progress
-    public Boolean isAllowedToMove(int x, int y, Board board){
-        Piece piece = board.getPiece(x, y);
-        if (piece == null|| piece.getColor() != playerTurn) return false;
-        return true;
-    }
 
     public void play(Board board) {
         int xStart;
@@ -53,8 +64,6 @@ public class Game {
                 System.out.println("Podaj współrzędną (x), a potem (y) planowanych ruchow, a jesli koniec to wpisz 'X': \n");
 
                 while (true){
-
-
                     xMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 64;
                     yMove = scanner.nextInt();
                     if (xMove == 24) break;
@@ -79,21 +88,21 @@ public class Game {
 
 
     public static void main(String[] args) {
-        Game game = new Game(12);//tylko dla parzystych n
+        Game game = new Game();
     }
 
     void showPossibleMoves(Field start) {
-        if (start.topLeft != null) {
-            checkMove(start.topLeft, start.topLeft.topLeft, playerTurn);
+        if (start.getTopLeft() != null) {
+            checkMove(start.getTopLeft(), start.getTopLeft().getTopLeft(), playerTurn);
         }
-        if (start.topRight != null) {
-            checkMove(start.topRight, start.topRight.topRight, playerTurn);
+        if (start.getTopRight() != null) {
+            checkMove(start.getTopRight(), start.getTopRight().getTopRight(), playerTurn);
         }
-        if (start.bottomLeft != null) {
-            checkMove(start.bottomLeft, start.bottomLeft.bottomLeft, !playerTurn);
+        if (start.getBottomLeft() != null) {
+            checkMove(start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), !playerTurn);
         }
-        if (start.bottomRight != null) {
-            checkMove(start.bottomRight, start.bottomRight.bottomRight, !playerTurn);
+        if (start.getBottomRight() != null) {
+            checkMove(start.getBottomRight(), start.getBottomRight().getBottomRight(), !playerTurn);
         }
     } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy. Zwraca listę referencji do pól na które możemy się poruszyć.
 
@@ -111,37 +120,37 @@ public class Game {
     }
 
     void strike(Field start, Tree parent){
-        if (start.topLeft.topLeft != null && start.topLeft.getIsOccupied()
-                && !start.topLeft.topLeft.getIsOccupied() && start.topLeft.getPiece().getColor() != playerTurn) {
+        if (start.getTopLeft().getTopLeft() != null && start.getTopLeft().getIsOccupied()
+                && !start.getTopLeft().getTopLeft().getIsOccupied() && start.getTopLeft().getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree child = new Tree(start.topLeft.topLeft);
+            Tree child = new Tree(start.getTopLeft().getTopLeft());
             parent.addChild(child);
-            strike(start.topLeft.topLeft, child);
+            strike(start.getTopLeft().getTopLeft(), child);
         }
-        if (start.topRight.topRight != null && start.topRight.getIsOccupied()
-                && !start.topRight.topRight.getIsOccupied() && start.topRight.getPiece().getColor() != playerTurn) {
+        if (start.getTopRight().getTopRight() != null && start.getTopRight().getIsOccupied()
+                && !start.getTopRight().getTopRight().getIsOccupied() && start.getTopRight().getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree child = new Tree(start.topRight.topRight);
+            Tree child = new Tree(start.getTopRight().getTopRight());
             parent.addChild(child);
-            strike(start.topRight.topRight, child);
+            strike(start.getTopRight().getTopRight(), child);
         }
-        if (start.bottomLeft.bottomLeft != null && start.bottomLeft.getIsOccupied()
-                && !start.bottomLeft.bottomLeft.getIsOccupied() && start.bottomLeft.getPiece().getColor() != playerTurn) {
+        if (start.getBottomLeft().getBottomLeft() != null && start.getBottomLeft().getIsOccupied()
+                && !start.getBottomLeft().getBottomLeft().getIsOccupied() && start.getBottomLeft().getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree child = new Tree(start.bottomLeft.bottomLeft);
+            Tree child = new Tree(start.getBottomLeft().getBottomLeft());
             parent.addChild(child);
-            strike(start.bottomLeft.bottomLeft, child);
+            strike(start.getBottomLeft().getBottomLeft(), child);
         }
-        if (start.bottomRight.bottomRight != null && start.bottomRight.getIsOccupied()
-                && !start.bottomRight.bottomRight.getIsOccupied() && start.bottomRight.getPiece().getColor() != playerTurn) {
+        if (start.getBottomRight().getBottomRight() != null && start.getBottomRight().getIsOccupied()
+                && !start.getBottomRight().getBottomRight().getIsOccupied() && start.getBottomRight().getPiece().getColor() != playerTurn) {
             count++;
             if (count > max) max = count;
-            Tree child = new Tree(start.bottomRight.bottomRight);
+            Tree child = new Tree(start.getBottomRight().getBottomRight());
             parent.addChild(child);
-            strike(start.bottomRight.bottomRight, child);
+            strike(start.getBottomRight().getBottomRight(), child);
         }
     }
 
@@ -191,6 +200,9 @@ public class Game {
 
     public int getN() {
         return n;
+    }
+    public void setN(int n) {
+        this.n = n;
     }
 
 

@@ -4,11 +4,11 @@ public class Field {
     int j;
     int id;
     boolean isOccupied = false;
-    Field topLeft;
-    Field topRight;
-    Field bottomLeft;
-    Field bottomRight;
-    Field striked;
+    private Field topLeft;
+    private Field topRight;
+    private Field bottomLeft;
+    private Field bottomRight;
+    private Field striked;
     Piece piece;
 
     public Field(int i, int j, Object o) {
