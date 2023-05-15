@@ -10,7 +10,7 @@ public class Board {
     private Map<Integer, Piece> black; //lista czarnych pionków
 
     public Piece getPiece(int x, int y){
-       return board[x][y].getPiece();
+        return board[x][y].getPiece();
     }
 
     public Board(int n) {
@@ -94,35 +94,35 @@ public class Board {
         return black;
     }
 
-     void displayBoard() {
-         System.out.print(" ");
-         for (int i = 0; i < n; i++) {
-             System.out.print(" " + (char) ('A' + i));
-         }
-         System.out.println();
+    void displayBoard() {
+        System.out.print(" ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(" " + (char) ('A' + i));
+        }
+        System.out.println();
 
-         int id = 1;
+        int id = 1;
 
-         for (int i = 0; i < n; i++) {
-             System.out.print(i + 1);
-             for (int j = 0; j < n; j++) {
-                 if ((i + j) % 2 == 0) {
-                     Field field = getFieldByIndex(i, j);
-                     if (field.getPiece() == null) {
-                         System.out.print(" .");
-                     } else {
-                         System.out.print(" " + field.getPiece().getSymbol());
-                     }
-                 } else {
-                     System.out.print("  ");
-                 }
-             }
-             if (i + 1 < 10) {
-                 System.out.println("  " + (i + 1) + " ");
-             } else {
-                 System.out.println(" " + (i + 1));
-             }
-         }
-     }
+        for (int i = 0; i < n; i++) {
+            System.out.print(i + 1);
+            for (int j = 0; j < n; j++) {
+                if ((i + j) % 2 == 0) {
+                    Field field = getFieldByIndex(i, j);
+                    if (field.getPiece() == null) {
+                        System.out.print(" .");
+                    } else {
+                        System.out.print(" " + field.getPiece().getSymbol());
+                    }
+                } else {
+                    System.out.print("  ");
+                }
+            }
+            if (i + 1 < 10) {
+                System.out.println("  " + (i + 1) + " ");
+            } else {
+                System.out.println(" " + (i + 1));
+            }
+        }
+    }
 
 }

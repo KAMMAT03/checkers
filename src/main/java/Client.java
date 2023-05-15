@@ -1,6 +1,6 @@
-import java.io.*;
-import java.net.*;
-public class Client {
+//import java.io.*;
+//import java.net.*;
+/*public class Client {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
@@ -101,3 +101,4 @@ public class Client {
     }
 
 }
+*/

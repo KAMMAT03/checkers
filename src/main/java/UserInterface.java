@@ -29,14 +29,6 @@ public class UserInterface implements Serializable {
         this.playerName = playerName;
     }
 
-    public boolean isSoundEnabled() {
-        return soundEnabled;
-    }
-
-    public void setSoundEnabled(boolean soundEnabled) {
-        this.soundEnabled = soundEnabled;
-    }
-
     public int getGameDifficulty() {
         return gameDifficulty;
     }
@@ -48,7 +40,6 @@ public class UserInterface implements Serializable {
     public void setOptions(UserInterface newOptions) {
         this.boardSize = newOptions.getBoardSize();
         this.playerName = newOptions.getPlayerName();
-        this.soundEnabled = newOptions.isSoundEnabled();
         this.gameDifficulty = newOptions.getGameDifficulty();
     }
 }
