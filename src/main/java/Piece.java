@@ -1,3 +1,5 @@
+package main.java;
+
 public class Piece {
     boolean isDame = false; // true - jest damką, false - jest zwykłym pionkiem
     boolean color; // true - biały, false - czarny

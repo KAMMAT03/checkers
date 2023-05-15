@@ -1,20 +1,31 @@
+package main.java;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Field {
 
     int i;
     int j;
     int id;
-    boolean isOccupied = false;
+    private boolean isOccupied = false;
     private Field topLeft;
     private Field topRight;
     private Field bottomLeft;
     private Field bottomRight;
     private Field striked;
+    private Tree root;
+    private boolean visited = false;
+
+    private List<Integer> possibleMoves;
     Piece piece;
 
     public Field(int i, int j, Object o) {
         this.i = i;
         this.j = j;
         this.id = i + 100*j;
+        possibleMoves = new ArrayList<>();
+        root = new Tree(this);
     }
 
     public Field getStriked() {
@@ -23,6 +34,27 @@ public class Field {
 
     public void setStriked(Field striked) {
         this.striked = striked;
+    }
+
+    public List<Integer> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public void addPossibleMoves(int move) {
+        this.possibleMoves.add(move);
+    }
+
+    public Tree getRoot() {
+        return root;
+    }
+
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     public Field getBottomLeft() {

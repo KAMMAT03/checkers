@@ -1,3 +1,5 @@
+package main.java;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,8 @@ public class Board {
 
     private Map<Integer, Piece> white; //lista białych pionków
     private Map<Integer, Piece> black; //lista czarnych pionków
-
+    private Map<Integer, Field> fieldsWithWhite;
+    private Map<Integer, Field> fieldsWithBlack;
     public Piece getPiece(int x, int y){
         return board[x][y].getPiece();
     }
@@ -18,6 +21,8 @@ public class Board {
         board = new Field[n][n];
         white = new HashMap<>();
         black = new HashMap<>();
+        fieldsWithWhite = new HashMap<>();
+        fieldsWithBlack = new HashMap<>();
 
         initializeBoard();
         initializePieces();
@@ -64,6 +69,7 @@ public class Board {
                     Piece piece = new Piece(true, i, j); //tworzenie nowego pionka białego
                     white.put(piece.getId(), piece); //dodanie pionka do listy białych pionków
                     getFieldByIndex(i, j).setPiece(piece); //ustawienie pionka na planszy
+                    fieldsWithWhite.put(piece.getId(), getFieldByIndex(i, j));
                 }
             }
         }
@@ -73,9 +79,18 @@ public class Board {
                     Piece piece = new Piece(false, i, j); //tworzenie nowego pionka czarnego
                     black.put(piece.getId(), piece); //dodanie pionka do listy czarnych pionków
                     getFieldByIndex(i, j).setPiece(piece); //ustawienie pionka na planszy
+                    fieldsWithBlack.put(piece.getId(), getFieldByIndex(i, j));
                 }
             }
         }
+    }
+
+    public Map<Integer, Field> getFieldsWithWhite() {
+        return fieldsWithWhite;
+    }
+
+    public Map<Integer, Field> getFieldsWithBlack() {
+        return fieldsWithBlack;
     }
 
     public Field getFieldByIndex(int i, int j) {
