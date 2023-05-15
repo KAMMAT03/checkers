@@ -30,6 +30,15 @@ public class Tree {
     public List<Tree> getChildren() {
         return children;
     }
+    public void clearStriked(Tree node) {
+        if (node != null) {
+            node.getData().setStriked(null);
+
+            for (Tree child : node.getChildren()) {
+                clearStriked(child);
+            }
+        }
+    }
 
     public List<Integer> getChildrenData() {
         return childrenData;

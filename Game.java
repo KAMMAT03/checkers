@@ -13,7 +13,6 @@ public class Game {
     List<Integer> possibleMoves;
     Tree root;
 
-
     public Game() {
 
         System.out.println("Wybierz wielkość planszy: A - Mała  B - Klasyczna C - Duża \n");
@@ -42,49 +41,46 @@ public class Game {
 
 
     public void play(Board board) {
-        int xStart;
-        int yStart;
-        int xMove;
-        int yMove;
+        int rowStart;
+        int columnStart;
+        int rowMove;
+        int columnMove;
+        boolean turn;
         int index;
 
         List<Integer> indexList = new ArrayList<>();
 
         while (!gameOver) {
-            xMove = 0;
-
+            turn = playerTurn;
+            Field endMove = null;
 
             if (playerTurn) {
-                System.out.println("\nRuch białych \n");
-                System.out.println("Podaj współrzędną (x), a potem (y) wybranego pionka: \n");
-
-                xStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 64;
-                yStart = scanner.nextInt();
-
-                System.out.println("Podaj współrzędną (x), a potem (y) planowanych ruchow, a jesli koniec to wpisz 'X': \n");
-
-                while (true){
-                    xMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 64;
-                    yMove = scanner.nextInt();
-                    if (xMove == 24) break;
-                    index = xMove + 100 * yMove;
-                    indexList.add(index);
-                }
-
-                move(board.getFieldByIndex(xStart,yStart), indexList, board, board.getWhite(), board.getBlack());
-                board.displayBoard();
-
-
-
+                System.out.println("Ruch białych");
             } else {
                 System.out.println("Ruch czarnych");
+            }
+            System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
 
-                // analogicznie dla czarnych
+            columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+            rowStart = scanner.nextInt() - 1;
+            while (turn == playerTurn){
+                System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
+                while (true){
+                    columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+                    if (columnMove == 23) break;
+                    rowMove = scanner.nextInt() - 1;
+                    index = rowMove + 100 * columnMove;
+                    indexList.add(index);
+                    if (indexList.size() == 1) {
+                        endMove = board.getFieldByIndex(rowMove, columnMove);
+                    }
+                }
+                move(board.getFieldByIndex(rowStart,columnStart), endMove, indexList, board, board.getWhite(), board.getBlack());
+                indexList.clear();
             }
             board.displayBoard();
-            playerTurn = !playerTurn;
-            }
         }
+    }
 
 
     public static void main(String[] args) {
@@ -93,16 +89,20 @@ public class Game {
 
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
-            checkMove(start.getTopLeft(), start.getTopLeft().getTopLeft(), playerTurn);
+            checkMove(start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
+            count = 0;
         }
         if (start.getTopRight() != null) {
-            checkMove(start.getTopRight(), start.getTopRight().getTopRight(), playerTurn);
+            checkMove(start.getTopRight(), start.getTopRight().getTopRight(), !playerTurn);
+            count = 0;
         }
         if (start.getBottomLeft() != null) {
-            checkMove(start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), !playerTurn);
+            checkMove(start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), playerTurn);
+            count = 0;
         }
         if (start.getBottomRight() != null) {
-            checkMove(start.getBottomRight(), start.getBottomRight().getBottomRight(), !playerTurn);
+            checkMove(start.getBottomRight(), start.getBottomRight().getBottomRight(), playerTurn);
+            count = 0;
         }
     } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy. Zwraca listę referencji do pól na które możemy się poruszyć.
 
@@ -112,85 +112,86 @@ public class Game {
         } else if (twoAway != null && !twoAway.getIsOccupied()
                 && oneAway.getPiece().getColor() != playerTurn) {
             count++;
-            max = count;
-            root.setData(twoAway);
+            if (count > max) max = count;
+            Tree temp = new Tree(twoAway);
+            root.addChild(temp);
             twoAway.setStriked(oneAway);
-            strike(twoAway, root);
+            strike(twoAway, temp);
         }
     }
 
-    void strike(Field start, Tree parent){
+    void canStrike(Field start, Tree parent){
         if (start.getTopLeft().getTopLeft() != null && start.getTopLeft().getIsOccupied()
-                && !start.getTopLeft().getTopLeft().getIsOccupied() && start.getTopLeft().getPiece().getColor() != playerTurn) {
-            count++;
-            if (count > max) max = count;
-            Tree child = new Tree(start.getTopLeft().getTopLeft());
-            parent.addChild(child);
-            strike(start.getTopLeft().getTopLeft(), child);
+                && !start.getTopLeft().getTopLeft().getIsOccupied() && start.getTopLeft().getPiece().getColor() != playerTurn){
+            strike(start.getTopLeft().getTopLeft(), parent);
+            count--;
         }
         if (start.getTopRight().getTopRight() != null && start.getTopRight().getIsOccupied()
-                && !start.getTopRight().getTopRight().getIsOccupied() && start.getTopRight().getPiece().getColor() != playerTurn) {
-            count++;
-            if (count > max) max = count;
-            Tree child = new Tree(start.getTopRight().getTopRight());
-            parent.addChild(child);
-            strike(start.getTopRight().getTopRight(), child);
+                && !start.getTopRight().getTopRight().getIsOccupied() && start.getTopRight().getPiece().getColor() != playerTurn){
+            strike(start.getTopRight().getTopRight(),parent);
+            count--;
         }
         if (start.getBottomLeft().getBottomLeft() != null && start.getBottomLeft().getIsOccupied()
-                && !start.getBottomLeft().getBottomLeft().getIsOccupied() && start.getBottomLeft().getPiece().getColor() != playerTurn) {
-            count++;
-            if (count > max) max = count;
-            Tree child = new Tree(start.getBottomLeft().getBottomLeft());
-            parent.addChild(child);
-            strike(start.getBottomLeft().getBottomLeft(), child);
+                && !start.getBottomLeft().getBottomLeft().getIsOccupied() && start.getBottomLeft().getPiece().getColor() != playerTurn){
+            strike(start.getBottomLeft().getBottomLeft(), parent);
+            count--;
         }
         if (start.getBottomRight().getBottomRight() != null && start.getBottomRight().getIsOccupied()
-                && !start.getBottomRight().getBottomRight().getIsOccupied() && start.getBottomRight().getPiece().getColor() != playerTurn) {
-            count++;
-            if (count > max) max = count;
-            Tree child = new Tree(start.getBottomRight().getBottomRight());
-            parent.addChild(child);
-            strike(start.getBottomRight().getBottomRight(), child);
+                && !start.getBottomRight().getBottomRight().getIsOccupied() && start.getBottomRight().getPiece().getColor() != playerTurn){
+            strike(start.getBottomRight().getBottomRight(), parent);
+            count--;
         }
     }
+    void strike(Field twoAway, Tree parent){
+        count++;
+        if (count > max) max = count;
+        Tree child = new Tree(twoAway);
+        parent.addChild(child);
+        canStrike(twoAway, child);
+    }
 
-    void move(Field start, List<Integer> wantedMoves, Board board, Map<Integer, Piece> white, Map<Integer, Piece> black) {  // Wykonuje ruch z pola start na pole end
+    void move(Field start, Field endMove, List<Integer> wantedMoves, Board board, Map<Integer, Piece> white, Map<Integer, Piece> black) {  // Wykonuje ruch z pola start na pole end
         possibleMoves = new ArrayList<>();
         List<Field> strikeFields = new ArrayList<>();
-         root = new Tree(null);
+        root = new Tree(start);
         max = 0;
         count = 0;
         showPossibleMoves(start);
-        Field end = root.getData();
-        Tree temp = new Tree(root.getData());
-        if (max > 0 && max == wantedMoves.size()) {
-            if (temp.getData().getId() != wantedMoves.get(0)) return; // zle bicie wykonane, ponownie wybrac ruch
-            strikeFields.add(temp.getData());
-            for (int i = 1; i < wantedMoves.size(); i++){
-                if (!temp.getChildrenData().contains(wantedMoves.get(i))) return; // zle bicie wykonane, ponownie wybrac ruch
+        Field end;
+        Tree temp = root;
+        if (max > 0 /*&& max == wantedMoves.size()*/) {
+            for (int i = 0; i < wantedMoves.size(); i++) {
+                if (!temp.getChildrenData().contains(wantedMoves.get(i))) {// zle bicie wykonane, ponownie wybrac ruch
+                    System.out.println("Wybrano zle pola, prosze wybrac ponownie");
+                    return;
+                }
                 int index = temp.getChildrenData().indexOf(wantedMoves.get(i));
                 temp = temp.getChildren().get(index);
                 strikeFields.add(temp.getData());
             }
-            for (Field f : strikeFields){
+            for (Field f : strikeFields) {
                 end = f;
                 end.setPiece(start.getPiece());
-                if (playerTurn){
-                    white.remove(end.getStriked().getPiece().getId());
-                } else {
+                if (playerTurn) {
                     black.remove(end.getStriked().getPiece().getId());
+                } else {
+                    white.remove(end.getStriked().getPiece().getId());
                 }
                 end.getStriked().setPiece(null);
                 end.setStriked(null);
                 start.setPiece(null);
                 start = f;
             }
-
+            root.clearStriked(root);
+        } else if (possibleMoves.size() == 0){
+            System.out.println("zly ruch");
+            return;
         } else if (wantedMoves.size() == 1){
             if (possibleMoves.contains(wantedMoves.get(0))) {
-                end.setPiece(start.getPiece());
+                endMove.setPiece(start.getPiece());
                 start.setPiece(null);
             } else {
+                System.out.println("Niepoprawny ruch, prosze wybrac inne pole");
                 return; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
                 //wybrac inne pole
             }
