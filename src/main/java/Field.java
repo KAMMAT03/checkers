@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Field {
 
-    int i;
-    int j;
+    int rowIndex;
+    int colIndex;
     int id;
     private boolean isOccupied = false;
     private Field topLeft;
@@ -18,10 +18,10 @@ public class Field {
     private List<Integer> possibleMoves;
     Piece piece;
 
-    public Field(int i, int j, Object o) {
-        this.i = i;
-        this.j = j;
-        this.id = i + 100*j;
+    public Field(int rowIndex, int colIndex, Object o) {
+        this.rowIndex = rowIndex;
+        this.colIndex = colIndex;
+        this.id = rowIndex + 100* colIndex;
         possibleMoves = new ArrayList<>();
         root = new Tree(this);
     }
@@ -91,12 +91,12 @@ public class Field {
         return id;
     }
 
-    public int getI() {
-        return i;
+    public int getRowIndex() {
+        return rowIndex;
     }
 
-    public int getJ() {
-        return j;
+    public int getColIndex() {
+        return colIndex;
     }
 
     public Piece getPiece() {
