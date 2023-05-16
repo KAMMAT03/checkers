@@ -6,13 +6,13 @@ public class UserInterface implements Serializable {
     private boolean soundEnabled;
     private int gameDifficulty;
 
-    public UserInterface(int boardSize, String playerName, boolean soundEnabled, int gameDifficulty) {
-        this.boardSize = boardSize;
-        this.playerName = playerName;
-        this.soundEnabled = soundEnabled;
-        this.gameDifficulty = gameDifficulty;
+    public UserInterface() {
+        Game game = new Game();
     }
 
+    public static void main(String[] args) {
+        new UserInterface();
+    }
     public int getBoardSize() {
         return boardSize;
     }

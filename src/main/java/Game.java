@@ -92,11 +92,6 @@ public class Game {
         }
     }
 
-
-    public static void main(String[] args) {
-        Game game = new Game();
-    }
-
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
             checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
