@@ -10,9 +10,6 @@ public class Board {
     private Map<Integer, Piece> black; //lista czarnych pionków
     private Map<Integer, Field> fieldsWithWhite;
     private Map<Integer, Field> fieldsWithBlack;
-    public Piece getPiece(int x, int y){
-        return board[x][y].getPiece();
-    }
 
     public Board(int n) {
         this.n = n;
@@ -26,6 +23,10 @@ public class Board {
         initializePieces();
         displayBoard();
 
+    }
+
+    public Piece getPiece(int x, int y) {
+        return board[x][y].getPiece();
     }
 
     private void initializeBoard() {
@@ -109,7 +110,7 @@ public class Board {
 
     void clearVisited() {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n ; j++) {
+            for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
                     board[i][j].setVisited(false);
                     board[i][j].getRoot().reset();
@@ -119,7 +120,7 @@ public class Board {
     }
 
     void displayBoard() {
-        System.out.print(" ");
+        System.out.print("  ");
         for (int i = 0; i < n; i++) {
             System.out.print(" " + (char) ('A' + i));
         }
@@ -128,7 +129,11 @@ public class Board {
         int id = 1;
 
         for (int i = 0; i < n; i++) {
-            System.out.print(i + 1);
+            if (i + 1 < 10) {
+                System.out.print(i + 1 + " ");
+            } else {
+                System.out.print(i + 1);
+            }
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
                     Field field = getFieldByIndex(i, j);
@@ -141,12 +146,18 @@ public class Board {
                     System.out.print("  ");
                 }
             }
-            if (i + 1 < 10) {
+
                 System.out.println("  " + (i + 1) + " ");
-            } else {
-                System.out.println(" " + (i + 1));
-            }
+
         }
+
+        System.out.print("  ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(" " + (char) ('A' + i));
+        }
+        System.out.println();
+
     }
+
 
 }
