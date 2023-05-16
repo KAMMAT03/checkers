@@ -4,26 +4,39 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
-	private ServerSocket serverSocket;
-
-	public EchoServer(String IP, int port) throws IOException {
-		serverSocket = new ServerSocket(port, 0, InetAddress.getByName(IP));
-	}
+//	private ServerSocket serverSocket;
+//
+//	public EchoServer(String IP, int port) throws IOException {
+//		serverSocket = new ServerSocket(port, 0, InetAddress.getByName(IP));
+//	}
 
 	public void HOST() throws IOException {
 		while (true) {
 			try {
-				Socket socket = serverSocket.accept();
-				InputStream is = socket.getInputStream();
-				BufferedReader br = new BufferedReader(new InputStreamReader(is));
-				OutputStream os = socket.getOutputStream();
-				PrintWriter pw = new PrintWriter(os, true);
-				String fromClient = br.readLine();
-				System.out.println("From client: [" + fromClient + "]");
-				pw.println("Echo: " + fromClient);
+				System.out.println("Waiting...");
+				ServerSocket ss = new ServerSocket(12129);
+				Socket soc = ss.accept();
+				System.out.println("Established");
 
-				Game game = new Game();
-				sendMove(game, socket);
+				ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
+				ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
+
+				while (true) {
+					Game obj = (Game) in.readObject();
+					System.out.println("Server received: " + obj);
+
+					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+					System.out.println("Enter move: ");
+					String move = reader.readLine();
+//					obj.setMove(move);
+
+					out.writeObject(obj);
+					out.flush();
+
+					if (move.equals("x")) {
+						break;
+					}
+				}
 
 			} catch (Exception e) {
 				System.err.println("Server exception: " + e);
@@ -31,20 +44,36 @@ public class EchoServer {
 		}
 	}
 
-	public void sendMove(Game game, Socket socket) {
+/*
+	public void sendAndReciveMove() {
 		try {
-			OutputStream os = socket.getOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(os);
-			oos.writeObject(game);
-			oos.flush();
-		} catch (IOException e) {
+			Socket socket = serverSocket.accept();
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			while (true) {
+				Game obj = (Game) in.readObject();
+				System.out.println("Server received: " + obj);
+
+				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+				System.out.println("Enter move: ");
+				String move = reader.readLine();
+//					obj.setMove(move); - tutaj jakoś trzeba to zmienić żeby zmieniał wartość move ale nie ma żadnej takiej metody
+
+				out.writeObject(obj);
+				out.flush();
+
+				if (move.equals("x")) {
+					break;
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
 			System.err.println("Error sending move: " + e.getMessage());
 		}
 	}
-
+*/
 
 	public static void main(String[] args) throws Exception {
-		EchoServer server = new EchoServer("localhost", 12129);
+		EchoServer server = new EchoServer();
 		server.HOST();
 	}
 }
