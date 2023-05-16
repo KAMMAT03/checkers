@@ -2,18 +2,17 @@ import java.io.*;
 import java.net.Socket;
 
 public class EchoClient {
-//	Socket socket;
-//
-//	public EchoClient(String IP, int port) throws IOException {
-//		socket = new Socket(IP, port);
-//	}
+	Socket socket;
+
+	public EchoClient(String IP, int port) throws IOException {
+		socket = new Socket(IP, port);
+	}
 
 	public void Connect() throws IOException, ClassNotFoundException {
 		System.out.println("Client started");
-		Socket soc = new Socket("localhost",12129);
 
-		ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
-		ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
 		while (true) {
 			Game obj = new Game();
@@ -29,7 +28,8 @@ public class EchoClient {
 			Game receivedObj = (Game) in.readObject();
 			System.out.println("Client moved: " + receivedObj);
 
-			if (newData.equals("exit")) {
+			if (newData.equals("x")) {
+//				closeGame();
 				break;
 			}
 		}
@@ -91,7 +91,9 @@ public class EchoClient {
 */
 
 	public static void main(String[] args) throws Exception {
-		EchoClient client = new EchoClient();
+		EchoClient client = new EchoClient("localhost",12129);
+//		System.out.println(client.socket.getPort());
+//		System.out.println(client.socket.getInetAddress().getHostName()); sprawdzenie formatu wyświetlania
 		client.Connect();
 	}
 }
