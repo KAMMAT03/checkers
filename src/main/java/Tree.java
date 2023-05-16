@@ -39,6 +39,10 @@ public class Tree {
             }
         }
     }
+    public void reset() {
+        this.children.clear();
+        this.childrenData.clear();
+    }
 
     public List<Integer> getChildrenData() {
         return childrenData;

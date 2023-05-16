@@ -89,6 +89,9 @@ public class Game {
                 indexList.clear();
             }
             board.displayBoard();
+            if (board.getWhite().isEmpty() || board.getBlack().isEmpty()) {
+                gameOver = true;
+            }
         }
     }
 
@@ -181,7 +184,7 @@ public class Game {
         count = 0;
         Field end;
         Tree temp = start.getRoot();
-        if (maxForFields > 0 /*&& max == wantedMoves.size()*/) {
+        if (maxForFields > 0 && maxForFields == wantedMoves.size()) {
             for (Integer wantedMove : wantedMoves) {
                 if (!temp.getChildrenData().contains(wantedMove)) {// zle bicie wykonane, ponownie wybrac ruch
                     System.out.println("Wybrano zle pola, prosze wybrac ponownie");
@@ -209,6 +212,7 @@ public class Game {
                 start.setPiece(null);
                 start = f;
             }
+            board.clearVisited();
             start.getRoot().clearStriked(start.getRoot());
         } else if (wantedMoves.size() == 1){
             if (start.getPossibleMoves().contains(wantedMoves.get(0))) {

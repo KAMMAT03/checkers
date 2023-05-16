@@ -107,6 +107,17 @@ public class Board {
         return black;
     }
 
+    void clearVisited() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n ; j++) {
+                if ((i + j) % 2 == 0) {
+                    board[i][j].setVisited(false);
+                    board[i][j].getRoot().reset();
+                }
+            }
+        }
+    }
+
     void displayBoard() {
         System.out.print(" ");
         for (int i = 0; i < n; i++) {
