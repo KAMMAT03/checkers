@@ -269,6 +269,9 @@ public class Game {
         this.n = n;
     }
 
+    public boolean isWinner() {
+        return winner;
+    }
 
     public boolean isPlayerTurn() {
         return playerTurn;
