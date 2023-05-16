@@ -14,5 +14,5 @@ https://drive.google.com/file/d/1yhbuji-iQKcc6W3OwzqRUG-49MCI4BR9/view?usp=shari
 ### Issues (Potrzebne poprawki po etapie pierwszym):
 - Brak pola klasy Field - isDameMaker.
 - Brak klasy odpowiedzialnej za GUI.
-- Brak utworzenia szkieletu klas i metod.
+- Brak utworzenia szkieletu klas i metod - konieczność wykonania tego zadania przez grupę realizującą etap 2.
 - Brak klasy "Board" odpowiedzialnej za planszę.
