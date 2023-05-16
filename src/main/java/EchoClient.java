@@ -60,6 +60,34 @@ public class EchoClient {
 		}
 	}
 
+
+	public void changeBoard() throws IOException, ClassNotFoundException {
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+		FileManager fileManager = new FileManager();
+		Game game = fileManager.loadGameState(FileManager.GAME_STATE_FILE);
+
+		out.writeObject(game);
+		out.flush();
+
+		System.out.println("Client sent game state to server.");
+
+		Game returnedGame = (Game) in.readObject();
+		System.out.println("Client received game state from server.");
+
+		fileManager.saveGameState(returnedGame, FileManager.GAME_STATE_FILE);
+}
+
+
+	public void closeGame() {
+		try {
+			socket.close();
+			System.out.println("Game connection closed.");
+		} catch (IOException e) {
+			System.err.println("Error closing game connection: " + e.getMessage());
+		}
+	}
 */
 
 	public static void main(String[] args) throws Exception {

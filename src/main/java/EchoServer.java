@@ -34,6 +34,7 @@ public class EchoServer {
 					out.flush();
 
 					if (move.equals("x")) {
+						//closeGame(serverSocket);
 						break;
 					}
 				}
@@ -70,8 +71,27 @@ public class EchoServer {
 			System.err.println("Error sending move: " + e.getMessage());
 		}
 	}
-*/
 
+
+	public void closeGame(ServerSocket serverSocket) {
+    try {
+        serverSocket.close();
+        System.out.println("Game connection closed.");
+    } catch (IOException e) {
+        System.err.println("Error closing game connection: " + e.getMessage());
+    }
+}
+
+
+
+	public void checkRules(Game game) {
+
+		tutaj będzie trzeba jakoś wywołać checkMove() albo showPossibleMoves() nie mam pojęcia jak to zaimplementować
+
+	}
+
+
+ */
 	public static void main(String[] args) throws Exception {
 		EchoServer server = new EchoServer();
 		server.HOST();
