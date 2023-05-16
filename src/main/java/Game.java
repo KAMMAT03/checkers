@@ -73,9 +73,9 @@ public class Game {
                 rowStart = scanner.nextInt() - 1;
                 int id = rowStart + 100 * columnStart;
                 if (possibleStartFields.contains(id)) break;
-                System.out.println("Wybrano zle pola, prosze wybrac ponownie");
+                System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
             }
-
+            possibleStartFields.clear();
 
             while (turn == playerTurn) {
                 System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
