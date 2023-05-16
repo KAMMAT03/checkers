@@ -2,59 +2,96 @@ import java.io.*;
 import java.net.Socket;
 
 public class EchoClient {
-	private Socket socket;
+//	Socket socket;
+//
+//	public EchoClient(String IP, int port) throws IOException {
+//		socket = new Socket(IP, port);
+//	}
 
-	public EchoClient(String IP, int port) throws IOException {
-		socket = new Socket(IP, port);
-	}
+	public void Connect() throws IOException, ClassNotFoundException {
+		System.out.println("Client started");
+		Socket soc = new Socket("localhost",12129);
 
-	public void Connect() throws IOException {
-		long l = 0;
-		try {
-			OutputStream os = socket.getOutputStream();
-			PrintWriter pw = new PrintWriter(os, true);
+		ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
+		ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
 
-			pw.println("Hello server! " + l++);
+		while (true) {
+			Game obj = new Game();
 
-			InputStream is = socket.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Enter move: ");
+			String newData = reader.readLine();
+//			obj.setData(newData);
 
-			System.out.println(br.readLine());
+			out.writeObject(obj);
+			out.flush();
 
-			Game game = receiveMove();
+			Game receivedObj = (Game) in.readObject();
+			System.out.println("Client moved: " + receivedObj);
 
-		} catch (Exception e) {
-			System.err.println("Client exception: " + e);
+			if (newData.equals("exit")) {
+				break;
+			}
 		}
 	}
 
-	public void sendMove(Game game) {
+	/*
+	public void sendAndReciveMove() throws IOException, ClassNotFoundException {
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+		while (true) {
+			Game obj = new Game();
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Enter move: ");
+			String move = reader.readLine();
+//			obj.setMove(move);
+
+			out.writeObject(obj);
+			out.flush();
+
+			Game receivedObj = (Game) in.readObject();
+			System.out.println("Client moved: " + receivedObj);
+
+			if (move.equals("x")) {
+				break;
+			}
+		}
+	}
+
+
+	public void changeBoard() throws IOException, ClassNotFoundException {
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+		FileManager fileManager = new FileManager();
+		Game game = fileManager.loadGameState(FileManager.GAME_STATE_FILE);
+
+		out.writeObject(game);
+		out.flush();
+
+		System.out.println("Client sent game state to server.");
+
+		Game returnedGame = (Game) in.readObject();
+		System.out.println("Client received game state from server.");
+
+		fileManager.saveGameState(returnedGame, FileManager.GAME_STATE_FILE);
+}
+
+
+	public void closeGame() {
 		try {
-			OutputStream os = socket.getOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(os);
-			oos.writeObject(game);
-			oos.flush();
+			socket.close();
+			System.out.println("Game connection closed.");
 		} catch (IOException e) {
-			System.err.println("Error sending move: " + e.getMessage());
+			System.err.println("Error closing game connection: " + e.getMessage());
 		}
 	}
-
-	public Game receiveMove() {
-		try {
-			InputStream is = socket.getInputStream();
-			ObjectInputStream ois = new ObjectInputStream(is);
-			Game game = (Game) ois.readObject();
-			return game;
-		} catch (IOException | ClassNotFoundException e) {
-			System.err.println("Error receiving move: " + e.getMessage());
-		}
-		return null;
-	}
-
-
+*/
 
 	public static void main(String[] args) throws Exception {
-		EchoClient client = new EchoClient("localhost", 12129);
+		EchoClient client = new EchoClient();
 		client.Connect();
 	}
 }

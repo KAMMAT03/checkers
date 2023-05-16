@@ -3,12 +3,13 @@ import java.util.*;
 public class Game {
 
 
-    private boolean playerTurn = true; //określa czyja jest tura (true - białe, false - czarne)
+    private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
     private Scanner scanner; //scanner do pobierania danych od użytkownika
 
     private int n; //wielkość planszy (n x n)
     private Boolean gameOver = false;
     private int movesCount;
+    private boolean winner;
     private int maxMovesCount;  // co to?
     private int maxForFields;
 
@@ -73,9 +74,9 @@ public class Game {
                 rowStart = scanner.nextInt() - 1;
                 int id = rowStart + 100 * columnStart;
                 if (possibleStartFields.contains(id)) break;
-                System.out.println("Wybrano zle pola, prosze wybrac ponownie");
+                System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
             }
-
+            possibleStartFields.clear();
 
             while (turn == playerTurn) {
                 System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
@@ -94,6 +95,13 @@ public class Game {
             }
             board.displayBoard();
             if (board.getWhite().isEmpty() || board.getBlack().isEmpty()) {
+                if (board.getWhite().isEmpty()){
+                    winner = true;
+                    System.out.println("Wygraly czarne");
+                } else if (board.getBlack().isEmpty()){
+                    winner = false;
+                    System.out.println("Wygraly biale");
+                }
                 gameOver = true;
             }
         }
@@ -253,7 +261,6 @@ public class Game {
             return false;
         }
     }
-
     public int getN() {
         return n;
     }
@@ -262,6 +269,9 @@ public class Game {
         this.n = n;
     }
 
+    public boolean isWinner() {
+        return winner;
+    }
 
     public boolean isPlayerTurn() {
         return playerTurn;

@@ -3,7 +3,8 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 
 public class FileManager {
-    private static final String GAME_STATE_FILE = "game_state.ser";
+    //powinno być private ale nie działa inaczej na ten moment
+    public static final String GAME_STATE_FILE = "game_state.ser";
     private static final String OPTIONS_FILE = "options.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
