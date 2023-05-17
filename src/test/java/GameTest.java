@@ -15,7 +15,7 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        game = new Game();
+//        game = new Game();
     }
 
     @Test

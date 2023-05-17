@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Board {
+public class Board implements Serializable {
 
     private int n; //wielkość planszy (n x n)
     private Field[][] board; //tablica wszystkich pól

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field {
+public class Field implements Serializable {
 
     int rowIndex;
     int colIndex;

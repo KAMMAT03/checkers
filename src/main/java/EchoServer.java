@@ -10,7 +10,7 @@ public class EchoServer {
 		serverSocket = new ServerSocket(port, 0, InetAddress.getByName(IP));
 	}
 
-	public void HOST() throws IOException {
+	public void host() throws IOException {
 		while (true) {
 			try {
 				System.out.println("Waiting...");
@@ -27,13 +27,11 @@ public class EchoServer {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 					System.out.println("Enter move: ");
 					String move = reader.readLine();
-//					obj.setMove(move);
+					// TODO: Sprawdzenie poprawności ruchu na podstawie obiektu "obj"
 
-					out.writeObject(obj);
-					out.flush();
+					sendAndReceiveMove(out, in, obj);
 
 					if (move.equals("x")) {
-						//closeGame(serverSocket);
 						break;
 					}
 				}
@@ -44,60 +42,16 @@ public class EchoServer {
 		}
 	}
 
+	private void sendAndReceiveMove(ObjectOutputStream out, ObjectInputStream in, Game obj) throws IOException, ClassNotFoundException {
+		out.writeObject(obj);
+		out.flush();
 
-	public void sendAndReciveMove() {
-		try {
-			// musi przekazywać socket z poprzedniego żeby zadziałało
-			Socket soc = serverSocket.accept(); // prowizoryczne accept drugi raz do testowania
-			ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
-			ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
-
-			while (true) {
-				Game obj = (Game) in.readObject();
-				System.out.println("Server received: " + obj);
-
-				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-				System.out.println("Enter move: ");
-				String move = reader.readLine();
-//					obj.setMove(move);
-
-				out.writeObject(obj);
-				out.flush();
-
-				if (move.equals("x")) {
-					//closeGame(serverSocket);
-					break;
-				}
-			}
-
-		} catch (Exception e) {
-			System.err.println("Server exception: " + e);
-		}
+		Game receivedObj = (Game) in.readObject();
+		System.out.println("Server moved: " + receivedObj);
 	}
 
-
-        public void closeGame() {
-        try {
-            serverSocket.close();
-            System.out.println("Game connection closed.");
-        } catch (IOException e) {
-            System.err.println("Error closing game connection: " + e.getMessage());
-        }
-    }
-
-	/*
-
-        public void checkRules(Game game) {
-
-            tutaj będzie trzeba jakoś wywołać checkMove() albo showPossibleMoves() nie mam pojęcia jak to zaimplementować
-
-        }
-
-
-     */
 	public static void main(String[] args) throws Exception {
-		EchoServer server = new EchoServer("localhost",12129);
-		server.HOST();
-//		server.sendAndReciveMove();
+		EchoServer server = new EchoServer("localhost", 12129);
+		server.host();
 	}
 }
