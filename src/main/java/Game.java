@@ -4,88 +4,32 @@ public class Game {
 
 
     private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
-    private Scanner scanner; //scanner do pobierania danych od użytkownika
 
     private int n; //wielkość planszy (n x n)
-    private Boolean gameOver = false;
+    private boolean gameOver;
     private int movesCount;
     private boolean winner;
     private int maxMovesCount;  // co to?
     private int maxForFields;
+
+    private Board board;
 
     private List<Integer> possibleStartFields;
 
 
     public Game(int n) {
         possibleStartFields = new ArrayList<>();
+        gameOver = false;
         this.n = n;
-        Board board = new Board(n);
+        board = new Board(n);
         playerTurn = true;
-        scanner = new Scanner(System.in);
-        play(board);
     }
 
 
-    public void play(Board board) {
-        int rowStart;
-        int columnStart;
-        int rowMove;
-        int columnMove;
-        boolean turn;
-        int index;
 
-        List<Integer> indexList = new ArrayList<>();
-
-        while (!gameOver) {
-            turn = playerTurn;
-            Field endMove = null;
-
-            if (playerTurn) {
-                System.out.println("Ruch białych");
-            } else {
-                System.out.println("Ruch czarnych");
-            }
-            System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
-            getPossibleStartFields(board);
-
-            while (true) {
-                columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
-                rowStart = scanner.nextInt() - 1;
-                int id = rowStart + 100 * columnStart;
-                if (possibleStartFields.contains(id)) break;
-                System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
-            }
-            possibleStartFields.clear();
-
-            while (turn == playerTurn) {
-                System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
-                while (true) {
-                    columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
-                    if (columnMove == 23) break;
-                    rowMove = scanner.nextInt() - 1;
-                    index = rowMove + 100 * columnMove;
-                    indexList.add(index);
-                    if (indexList.size() == 1) {
-                        endMove = board.getFieldByIndex(rowMove, columnMove);
-                    }
-                }
-                move(board.getFieldByIndex(rowStart, columnStart), endMove, indexList, board);
-                indexList.clear();
-            }
-            board.displayBoard();
-            if (board.getWhite().isEmpty() || board.getBlack().isEmpty()) {
-                if (board.getWhite().isEmpty()){
-                    winner = true;
-                    System.out.println("Wygraly czarne");
-                } else if (board.getBlack().isEmpty()){
-                    winner = false;
-                    System.out.println("Wygraly biale");
-                }
-                gameOver = true;
-            }
-        }
+    public boolean getWinner(){
+        return winner;
     }
-
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
             checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
@@ -208,7 +152,10 @@ public class Game {
         return true;
     }
 
-    void getPossibleStartFields(Board board) {
+    public List<Integer> getPossibleStartFields() {
+        return possibleStartFields;
+    }
+    void ckeckPossibleStartFields(Board board) {
         maxForFields = 0;
         if (playerTurn) {
             for (Field f : board.getFieldsWithWhite().values()) {
@@ -238,6 +185,22 @@ public class Game {
         return n;
     }
 
+    public boolean getGameOver() {
+        return gameOver;
+    }
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+    public void setGameOver(Boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public Boolean getPlayerTurn() {
+        return playerTurn;
+    }
     public void setN(int n) {
         this.n = n;
     }
@@ -248,6 +211,9 @@ public class Game {
 
     public boolean isPlayerTurn() {
         return playerTurn;
+    }
+    public Board getBoard() {
+        return board;
     }
 
     public void setPlayerTurn(boolean playerTurn) {

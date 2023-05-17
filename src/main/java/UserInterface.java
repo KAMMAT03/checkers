@@ -1,10 +1,11 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface implements Serializable {
     private static int boardSize;
     private String playerName;
-    private int gameDifficulty;
 
     public UserInterface() {
         Scanner scanner = new Scanner(System.in);
@@ -64,6 +65,69 @@ public class UserInterface implements Serializable {
     public void newGame() {
         chooseBoardSize();
         Game game = new Game(boardSize);
+
+        int rowStart;
+        int columnStart;
+        int rowMove;
+        int columnMove;
+        boolean turn;
+        int index;
+
+        List<Integer> indexList = new ArrayList<>();
+
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (!game.getGameOver()) {
+            turn = game.getPlayerTurn();
+            Field endMove = null;
+
+            if (game.getPlayerTurn()) {
+                System.out.println("Ruch białych");
+            } else {
+                System.out.println("Ruch czarnych");
+            }
+            System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
+            game.ckeckPossibleStartFields(game.getBoard());
+
+            while (true) {
+                columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+                rowStart = scanner.nextInt() - 1;
+                int id = rowStart + 100 * columnStart;
+                if (game.getPossibleStartFields().contains(id)) break;
+                System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
+            }
+            game.getPossibleStartFields().clear();
+
+
+            while (turn == game.getPlayerTurn()) {
+                System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
+                while (true) {
+                    columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+                    if (columnMove == 23) break;
+                    rowMove = scanner.nextInt() - 1;
+                    index = rowMove + 100 * columnMove;
+                    indexList.add(index);
+                    if (indexList.size() == 1) {
+                        endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
+                    }
+                }
+                game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+                indexList.clear();
+            }
+            game.getBoard().displayBoard();
+            if (game.getBoard().getWhite().isEmpty() || game.getBoard().getBlack().isEmpty()) {
+                if (game.getBoard().getWhite().isEmpty()){
+                    game.setWinner(true);
+                    System.out.println("Wygraly czarne");
+                } else if (game.getBoard().getBlack().isEmpty()){
+                    game.setWinner(false);
+                    System.out.println("Wygraly biale");
+                }
+                game.setGameOver(true);
+            }
+
+        }
     }
 
     public static void main(String[] args) {
@@ -86,14 +150,6 @@ public class UserInterface implements Serializable {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
-    }
-
-    public int getGameDifficulty() {
-        return gameDifficulty;
-    }
-
-    public void setGameDifficulty(int gameDifficulty) {
-        this.gameDifficulty = gameDifficulty;
     }
 
     public void setOptions(UserInterface newOptions) {
