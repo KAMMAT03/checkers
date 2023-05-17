@@ -17,6 +17,7 @@ public class Game {
 
 
     public Game(int n) {
+        possibleStartFields = new ArrayList<>();
         this.n = n;
         Board board = new Board(n);
         playerTurn = true;
