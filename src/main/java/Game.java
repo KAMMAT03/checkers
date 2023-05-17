@@ -220,6 +220,10 @@ public class Game implements Serializable {
         return winner;
     }
 
+    public void displayBoard() {
+        board.displayBoard();
+    }
+
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
