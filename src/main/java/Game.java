@@ -16,30 +16,8 @@ public class Game {
     private List<Integer> possibleStartFields;
 
 
-    public Game() {
-
-        System.out.println("Wybierz wielkość planszy: A - Mała  B - Klasyczna C - Duża \n");
-        scanner = new Scanner(System.in);
-        possibleStartFields = new ArrayList<>();
-        switch (Character.toUpperCase(scanner.next().charAt(0))) {
-            case 'A':
-                setN(8);
-                ;
-                break;
-            case 'B':
-                setN(10);
-                ;
-                break;
-            case 'C':
-                setN(12);
-                ;
-                break;
-            default:
-                System.out.println("Niepoprawny wybór, wybieram planszę klasyczną");
-                setN(10);
-                break;
-        }
-
+    public Game(int n) {
+        this.n = n;
         Board board = new Board(n);
         playerTurn = true;
         scanner = new Scanner(System.in);
