@@ -153,7 +153,7 @@ public class Game {
         return child;
     }
 
-    void move(Field start, Field endMove, List<Integer> wantedMoves, Board board) {  // Wykonuje ruch z pola start na pole end
+    public boolean move(Field start, Field endMove, List<Integer> wantedMoves, Board board) {  // Wykonuje ruch z pola start na pole end
         List<Field> strikeFields = new ArrayList<>();
         maxMovesCount = 0;
         movesCount = 0;
@@ -162,8 +162,8 @@ public class Game {
         if (maxForFields > 0 && maxForFields == wantedMoves.size()) {
             for (Integer wantedMove : wantedMoves) {
                 if (!temp.getChildrenData().contains(wantedMove)) {// zle bicie wykonane, ponownie wybrac ruch
-                    System.out.println("Wybrano zle pola, prosze wybrac ponownie");
-                    return;
+//                    System.out.println("Wybrano zle pola, prosze wybrac ponownie");
+                    return false;
                 }
                 int index = temp.getChildrenData().indexOf(wantedMove);
                 temp = temp.getChildren().get(index);
@@ -200,11 +200,12 @@ public class Game {
                 start.setPiece(null);
             } else {
                 System.out.println("Niepoprawny ruch, prosze wybrac inne pole");
-                return; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
+                return false; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
                 //wybrac inne pole
             }
         }
         playerTurn = !playerTurn;
+        return true;
     }
 
     void getPossibleStartFields(Board board) {
@@ -233,13 +234,6 @@ public class Game {
         movesCount = 0;
     }
 
-    public boolean fieldContainsPlayerPiece(Field field) {
-        if (field.getIsOccupied() && playerTurn == field.getPiece().getColor()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     public int getN() {
         return n;
     }
