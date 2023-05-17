@@ -1,20 +1,18 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
 
+    private final Board board;
+    private final List<Integer> possibleStartFields;
     private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
-
     private int n; //wielkość planszy (n x n)
     private boolean gameOver;
     private int movesCount;
     private boolean winner;
-    private int maxMovesCount;  // co to?
+    private int maxMovesCount;
     private int maxForFields;
-
-    private Board board;
-
-    private List<Integer> possibleStartFields;
 
 
     public Game(int n) {
@@ -25,11 +23,6 @@ public class Game {
         playerTurn = true;
     }
 
-
-
-    public boolean getWinner(){
-        return winner;
-    }
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
             checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
@@ -155,6 +148,7 @@ public class Game {
     public List<Integer> getPossibleStartFields() {
         return possibleStartFields;
     }
+
     void ckeckPossibleStartFields(Board board) {
         maxForFields = 0;
         if (playerTurn) {
@@ -185,24 +179,24 @@ public class Game {
         return n;
     }
 
+    public void setN(int n) {
+        this.n = n;
+    }
+
     public boolean getGameOver() {
         return gameOver;
     }
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
-    public void setWinner(boolean winner) {
-        this.winner = winner;
-    }
+
     public void setGameOver(Boolean gameOver) {
         this.gameOver = gameOver;
     }
 
     public Boolean getPlayerTurn() {
         return playerTurn;
-    }
-    public void setN(int n) {
-        this.n = n;
     }
 
     public boolean isWinner() {
@@ -212,12 +206,21 @@ public class Game {
     public boolean isPlayerTurn() {
         return playerTurn;
     }
+
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
     public Board getBoard() {
         return board;
     }
 
-    public void setPlayerTurn(boolean playerTurn) {
-        this.playerTurn = playerTurn;
+    public boolean getWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
     }
 
 

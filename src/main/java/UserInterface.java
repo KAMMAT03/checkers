@@ -62,6 +62,11 @@ public class UserInterface implements Serializable {
         } while (choice != 1 && choice != 2 && choice != 3);
 
     }
+
+    public static void main(String[] args) {
+        new UserInterface();
+    }
+
     public void newGame() {
         chooseBoardSize();
         Game game = new Game(boardSize);
@@ -117,10 +122,10 @@ public class UserInterface implements Serializable {
             }
             game.getBoard().displayBoard();
             if (game.getBoard().getWhite().isEmpty() || game.getBoard().getBlack().isEmpty()) {
-                if (game.getBoard().getWhite().isEmpty()){
+                if (game.getBoard().getWhite().isEmpty()) {
                     game.setWinner(true);
                     System.out.println("Wygraly czarne");
-                } else if (game.getBoard().getBlack().isEmpty()){
+                } else if (game.getBoard().getBlack().isEmpty()) {
                     game.setWinner(false);
                     System.out.println("Wygraly biale");
                 }
@@ -129,12 +134,6 @@ public class UserInterface implements Serializable {
 
         }
     }
-
-    public static void main(String[] args) {
-        new UserInterface();
-    }
-
-
 
     public int getBoardSize() {
         return boardSize;
@@ -153,7 +152,7 @@ public class UserInterface implements Serializable {
     }
 
     public void setOptions(UserInterface newOptions) {
-        this.boardSize = newOptions.getBoardSize();
-        this.playerName = newOptions.getPlayerName();
+        boardSize = newOptions.getBoardSize();
+        playerName = newOptions.getPlayerName();
     }
 }
