@@ -34,7 +34,13 @@ public class Board implements Serializable {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) { //tworzenie tylko nieparzystych pól planszy
-                    board[i][j] = new Field(i, j, null);
+                    Field tempField = new Field(i, j, null);
+                    board[i][j] = tempField;
+                    if (i == 0){
+                        tempField.setBlackDame(true);
+                    } else if (i == n - 1){
+                        tempField.setWhiteDame(true);
+                    }
                 }
             }
         }

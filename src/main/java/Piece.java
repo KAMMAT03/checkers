@@ -1,12 +1,12 @@
 import java.io.Serializable;
 
 public class Piece implements Serializable {
-    boolean isDame = false; // true - jest damką, false - jest zwykłym pionkiem
-    boolean color; // true - biały, false - czarny
-    Field field; // referencja do pola na krórym stoi pionek
-    int i;
-    int j;
-    int id;
+    private boolean isDame = false; // true - jest damką, false - jest zwykłym pionkiem
+    private boolean color; // true - biały, false - czarny
+    private Field field; // referencja do pola na krórym stoi pionek
+    private int i;
+    private int j;
+    private int id;
 
 
     public Piece(boolean color, int i, int j) {
@@ -22,6 +22,10 @@ public class Piece implements Serializable {
 
     public boolean getColor() {
         return color;
+    }
+
+    public void setDame(boolean dame) {
+        isDame = dame;
     }
 
     public boolean getIsDame() {

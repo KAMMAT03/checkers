@@ -9,11 +9,12 @@ public class Tree implements Serializable {
 
     private List<Tree> children = new ArrayList<>();
     private List<Integer> childrenData = new ArrayList<>();
-
+    private boolean afterStrike;
     private Tree parent = null;
 
     public Tree(Field data) {
         this.data = data;
+        afterStrike = false;
     }
 
     public Tree addChild(Tree child) {
@@ -45,6 +46,13 @@ public class Tree implements Serializable {
         this.childrenData.clear();
     }
 
+    public boolean isAfterStrike() {
+        return afterStrike;
+    }
+
+    public void setAfterStrike(boolean afterStrike) {
+        this.afterStrike = afterStrike;
+    }
     public List<Integer> getChildrenData() {
         return childrenData;
     }
@@ -64,5 +72,23 @@ public class Tree implements Serializable {
     public Tree getParent() {
         return parent;
     }
+    public int getMaxDepth() {
+        return getMaxDepth(this);
+    }
+
+    private int getMaxDepth(Tree node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int maxChildDepth = 0;
+        for (Tree child : node.getChildren()) {
+            int childDepth = getMaxDepth(child);
+            maxChildDepth = Math.max(maxChildDepth, childDepth);
+        }
+
+        return maxChildDepth + 1;
+    }
+
 
 }

@@ -26,27 +26,195 @@ public class Game implements Serializable {
 
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
-            checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
+            if (start.getPiece().getIsDame()) {
+                checkDameMove(start, !playerTurn, start.getRoot(), 1, null);
+            } else {
+                checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
+            }
             movesCount = 0;
         }
         if (start.getTopRight() != null) {
-            checkMove(start, start.getTopRight(), start.getTopRight().getTopRight(), !playerTurn);
+            if (start.getPiece().getIsDame()) {
+                checkDameMove(start, !playerTurn, start.getRoot(), 2, null);
+            } else {
+                checkMove(start, start.getTopRight(), start.getTopRight().getTopRight(), !playerTurn);
+            }
             movesCount = 0;
         }
         if (start.getBottomLeft() != null) {
-            checkMove(start, start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), playerTurn);
+            if (start.getPiece().getIsDame()) {
+                checkDameMove(start, !playerTurn, start.getRoot(), 3, null);
+            } else {
+                checkMove(start, start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), playerTurn);
+            }
             movesCount = 0;
         }
         if (start.getBottomRight() != null) {
+            if (start.getPiece().getIsDame()) {
+                checkDameMove(start, !playerTurn, start.getRoot(), 4, null);
+            } else {
+                checkMove(start, start.getBottomRight(), start.getBottomRight().getBottomRight(), playerTurn);
+            }
             checkMove(start, start.getBottomRight(), start.getBottomRight().getBottomRight(), playerTurn);
             movesCount = 0;
         }
-    } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy. Zwraca listę referencji do pól na które możemy się poruszyć.
+    } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy.
+      // Zwraca listę referencji do pól na które możemy się poruszyć.
+
+    void checkDameMove(Field current, boolean color, Tree parent, int direction, Tree child){
+        switch (direction) {
+            case 1 -> {
+                if (parent.isAfterStrike() && child != null) {
+                    showPossibleDameMoves(current, color, direction, child);
+                }
+                if (current.getTopLeft() != null && !current.getTopLeft().getIsOccupied()) {
+                    Tree newChild = new Tree(current.getTopLeft());
+                    parent.addChild(newChild);
+                    if (parent.isAfterStrike()){
+                        current.getTopLeft().setStriked(current.getStriked());
+                    }
+                    checkDameMove(current.getTopLeft(), color, parent, direction, newChild);
+                } else if (current.getTopLeft() != null && current.getTopLeft().getTopLeft() != null
+                        && !current.getTopLeft().getTopLeft().getIsOccupied()
+                        && current.getTopLeft().getIsOccupied()
+                        && current.getTopLeft().getPiece().getColor() != playerTurn) {
+                    parent.reset();
+                    Tree newChild = new Tree(current.getTopLeft().getTopLeft());
+                    parent.addChild(newChild);
+                    newChild.getData().setStriked(current.getTopLeft());
+                    parent.setAfterStrike(true);
+                    checkDameMove(current.getTopLeft().getTopLeft(), color, parent, direction, newChild);
+                }
+            }
+            case 2 -> {
+                if (parent.isAfterStrike() && child != null) {
+                    showPossibleDameMoves(current, color, direction, child);
+                }
+                if (current.getTopRight() != null && !current.getTopRight().getIsOccupied()) {
+                    Tree newChild = new Tree(current.getTopRight());
+                    parent.addChild(newChild);
+                    if (parent.isAfterStrike()){
+                        current.getTopRight().setStriked(current.getStriked());
+                    }
+                    checkDameMove(current.getTopRight(), color, parent, direction, newChild);
+                } else if (current.getTopRight() != null && current.getTopRight().getTopRight() != null
+                        && !current.getTopRight().getTopRight().getIsOccupied()
+                        && current.getTopRight().getIsOccupied()
+                        && current.getTopRight().getPiece().getColor() != playerTurn) {
+                    parent.reset();
+                    Tree newChild = new Tree(current.getTopRight().getTopRight());
+                    parent.addChild(newChild);
+                    newChild.getData().setStriked(current.getTopRight());
+                    parent.setAfterStrike(true);
+                    checkDameMove(current.getTopRight().getTopRight(), color, parent, direction, newChild);
+                }
+            }
+            case 3 -> {
+                if (parent.isAfterStrike() && child != null) {
+                    showPossibleDameMoves(current, color, direction, child);
+                }
+                if (current.getBottomRight() != null && !current.getBottomRight().getIsOccupied()) {
+                    Tree newChild = new Tree(current.getBottomRight());
+                    parent.addChild(newChild);
+                    if (parent.isAfterStrike()){
+                        current.getBottomRight().setStriked(current.getStriked());
+                    }
+                    checkDameMove(current.getBottomRight(), color, parent, direction, newChild);
+                } else if (current.getBottomRight() != null && current.getBottomRight().getBottomRight() != null
+                        && !current.getBottomRight().getBottomRight().getIsOccupied()
+                        && current.getBottomRight().getIsOccupied()
+                        && current.getBottomRight().getPiece().getColor() != playerTurn) {
+                    parent.reset();
+                    Tree newChild = new Tree(current.getBottomRight().getBottomRight());
+                    parent.addChild(newChild);
+                    newChild.getData().setStriked(current.getBottomRight());
+                    parent.setAfterStrike(true);
+                    checkDameMove(current.getBottomRight().getBottomRight(), color, parent, direction, newChild);
+                }
+            }
+            case 4 -> {
+                if (parent.isAfterStrike() && child != null) {
+                    showPossibleDameMoves(current, color, direction, child);
+                }
+                if (current.getBottomLeft() != null && !current.getBottomLeft().getIsOccupied()) {
+                    Tree newChild = new Tree(current.getBottomLeft());
+                    parent.addChild(newChild);
+                    if (parent.isAfterStrike()){
+                        current.getBottomLeft().setStriked(current.getStriked());
+                    }
+                    checkDameMove(current.getBottomLeft(), color, parent, direction, newChild);
+                } else if (current.getBottomLeft() != null && current.getBottomLeft().getBottomLeft() != null
+                        && !current.getBottomLeft().getBottomLeft().getIsOccupied()
+                        && current.getBottomLeft().getIsOccupied()
+                        && current.getBottomLeft().getPiece().getColor() != playerTurn) {
+                    parent.reset();
+                    Tree newChild = new Tree(current.getBottomLeft().getBottomLeft());
+                    parent.addChild(newChild);
+                    newChild.getData().setStriked(current.getBottomLeft());
+                    parent.setAfterStrike(true);
+                    checkDameMove(current.getBottomLeft().getBottomLeft(), color, parent, direction, newChild);
+                }
+            }
+        }
+    }
+    void showPossibleDameMoves(Field current, boolean color, int direction, Tree parent){
+        Field tempField = current;
+        if (direction == 1 || direction == 3){
+            while (tempField.getTopRight() != null) {
+                if (!tempField.getTopRight().getIsOccupied()){
+                    tempField = tempField.getTopRight();
+                } else if (tempField.getTopRight().getPiece().getColor() != playerTurn
+                        && tempField.getTopRight().getTopRight() != null
+                        && !tempField.getTopRight().getTopRight().getIsOccupied()){
+                    Tree newChild  = new Tree(tempField.getTopRight().getTopRight());
+                    parent.addChild(newChild);
+                    checkDameMove(tempField.getTopRight().getTopRight(), color, parent, 2, newChild);
+                } else break;
+            }
+            tempField = current;
+            while (tempField.getBottomLeft() != null) {
+                if (!tempField.getBottomLeft().getIsOccupied()){
+                    tempField = tempField.getBottomLeft();
+                } else if (tempField.getBottomLeft().getPiece().getColor() != playerTurn
+                        && tempField.getBottomLeft().getBottomLeft() != null
+                        && !tempField.getBottomLeft().getBottomLeft().getIsOccupied()){
+                    Tree newChild  = new Tree(tempField.getBottomLeft().getBottomLeft());
+                    parent.addChild(newChild);
+                    checkDameMove(tempField.getBottomLeft().getBottomLeft(), color, parent, 4, newChild);
+                } else break;
+            }
+        } else if (direction == 2 || direction == 4){
+            while (tempField.getTopLeft() != null) {
+                if (!tempField.getTopLeft().getIsOccupied()){
+                    tempField = tempField.getTopLeft();
+                } else if (tempField.getTopLeft().getPiece().getColor() != playerTurn
+                        && tempField.getTopLeft().getTopLeft() != null
+                        && !tempField.getTopLeft().getTopLeft().getIsOccupied()){
+                    Tree newChild  = new Tree(tempField.getTopLeft().getTopLeft());
+                    parent.addChild(newChild);
+                    checkDameMove(tempField.getTopLeft().getTopLeft(), color, parent, 1, newChild);
+                } else break;
+            }
+            tempField = current;
+            while (tempField.getBottomRight() != null) {
+                if (!tempField.getBottomRight().getIsOccupied()){
+                    tempField = tempField.getBottomRight();
+                } else if (tempField.getBottomRight().getPiece().getColor() != playerTurn
+                        && tempField.getBottomRight().getBottomRight() != null
+                        && !tempField.getBottomRight().getBottomRight().getIsOccupied()){
+                    Tree newChild  = new Tree(tempField.getBottomRight().getBottomRight());
+                    parent.addChild(newChild);
+                    checkDameMove(tempField.getBottomRight().getBottomRight(), color, parent, 3, newChild);
+                } else break;
+            }
+        }
+    }
 
     void checkMove(Field start, Field oneAway, Field twoAway, boolean color) {
         if (!oneAway.getIsOccupied() && color) {
             start.addPossibleMoves(oneAway.getId());
-        } else if (twoAway != null && !twoAway.getIsOccupied() && oneAway.getIsOccupied() && oneAway.getPiece().getColor() != playerTurn) {
+        } else if (twoAway != null && !twoAway.getIsOccupied() && oneAway.getIsOccupied()
+                && oneAway.getPiece().getColor() != playerTurn) {
             movesCount++;
             if (movesCount > maxMovesCount) maxMovesCount = movesCount;
             Tree temp = new Tree(twoAway);
@@ -185,6 +353,12 @@ public class Game implements Serializable {
 
     private void possibleStartLoop(Field f) {
         showPossibleMoves(f);
+        if (f.getPiece().getIsDame()){
+            maxMovesCount = f.getRoot().getMaxDepth() - 1;
+            if (!f.getRoot().isAfterStrike()){
+                f.setPossibleMoves(f.getRoot().getChildrenData());
+            }
+        }
         if (maxMovesCount > maxForFields) {
             maxForFields = maxMovesCount;
             possibleStartFields.clear();
