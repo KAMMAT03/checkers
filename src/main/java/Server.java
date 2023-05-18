@@ -1,142 +1,83 @@
-/*import java.net.ServerSocket;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Server {
-   private ServerSocket serverSocket;
-   private Game game;
-   private Map<Socket, DataOutputStream> clients;
+	private ServerSocket serverSocket;
 
-   public Server(Game game) {
-      this.game = game;
-      clients = new HashMap<>();
-   }
+	public Server(String IP, int port) throws IOException {
+		serverSocket = new ServerSocket(port, 0, InetAddress.getByName(IP));
+	}
 
-   ServerSocket HOST(String IP, int port){
-      try {
-         InetAddress inetAddress = InetAddress.getByName(IP);
-         serverSocket = new ServerSocket(port, 50, inetAddress);
+	public void host() throws IOException {
+		while (true) {
+			try {
+				System.out.println("Waiting...");
+				Socket soc = serverSocket.accept();
+				System.out.println("Established");
 
-         while (true) {
-            Socket socket = serverSocket.accept();
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            clients.put(socket, out);
-            startListening(socket, in);
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      return serverSocket;
-   }
+				ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
+				ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
 
-   private void startListening(Socket socket, DataInputStream in) {
-      Thread listeningThread = new Thread(() -> {
-         while (!socket.isClosed()) {
-            try {
-               String message = in.readUTF();
-               processClientMessage(socket, message);
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-         }
-      });
-      listeningThread.start();
-   }
+				Game game = new Game(8); // Tworzymy nową instancję gry
 
-   private void processClientMessage(Socket socket, String message) {
-      String[] parts = message.split(" ");
-      switch (parts[0]) {
-         case "Change board":
-            game.updateBoard(parts[1]);
-            broadcastMessage("Change board " + parts[1]);
-            break;
-         case "Move":
-            Field start = game.getFieldById(Integer.parseInt(parts[1]));
-            Field end = game.getFieldById(Integer.parseInt(parts[2]));
-            List<Field> possibleMoves = game.showPossibleMoves(start);
-            if (possibleMoves.contains(end) && CheckGameRules(start, end)) {
-               game.move(start, end);
-               game.endTurn();
-               broadcastMessage("Move " + start.getId() + " " + end.getId());
-            } else {
-               sendMessage(socket, "Invalid move");
-            }
-            break;
-         case "Close game":
-            closeGame(socket);
-            break;
-         default:
-            System.err.println("Unknown message received: " + message);
-            break;
-         if (message.startsWith("Error:")) {
-            String errorMessage = message.substring(6);
-            broadcastError(errorMessage);
-      }
-   }
+				out.writeObject(game);
 
-   private void sendMessage(Socket socket, String message) {
-      try {
-         DataOutputStream out = clients.get(socket);
-         out.writeUTF(message);
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
+				while (true) {
+					sendAndReceiveMove(out, in, game);
+				}
+				/*
 
-   private void broadcastMessage(String message) {
-      for (DataOutputStream out : clients.values()) {
-         try {
-            out.writeUTF(message);
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-      }
-   }
+				while (!game.isGameOver()) {
+					game.switchPlayerTurn();
+					sendAndReceiveMove(out, in, game);
+					game.makeMove(game.getMove());
+					out.reset();
+					out.writeObject(game);
+					out.flush();
+				}
 
-   void ChangeBoard(String newBoard){
-      game.updateBoard(newBoard);
-      broadcastMessage("Change board " + newBoard);
-   }
-   void CloseGame(){
-      try {
-         DataOutputStream out = clients.get(socket);
-         out.writeUTF("Close game");
-         clients.remove(socket);
-         socket.close();
-         if (clients.isEmpty()) {
-            serverSocket.close();
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
-   void SendMove(Field start, Field end){
-      if (CheckGameRules(start, end)) {
-         game.move(start, end);
-         game.endTurn();
-         broadcastMessage("Move " + start.getId() + " " + end.getId());
-      }
-   }
+				 */
 
-   boolean CheckGameRules(Field start, Field end) {
-      // Implementacja logiki sprawdzania zasad gry
-      // Na przykład: sprawdzenie, czy ruch jest dozwolony, czy jest zgodny z zasadami gry w warcaby
-      // Jeśli ruch jest dozwolony, zwraca true. W przeciwnym razie zwraca false.
-      // Przykład:
-      List<Field> possibleMoves = game.showPossibleMoves(start);
-      return possibleMoves.contains(end);
-   }
+			} catch (Exception e) {
+				System.err.println("Server exception: " + e);
+			}
+		}
+	}
 
-   private void broadcastError(String errorMessage) {
-      for (DataOutputStream out : clients.values()) {
-         try {
-            out.writeUTF("Error:" + errorMessage);
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-      }
-   }
+	private void sendAndReceiveMove(ObjectOutputStream out, ObjectInputStream in, Game game) throws IOException, ClassNotFoundException {
+		if (game.isPlayerTurn()) {
+			BufferedReader serverReader = new BufferedReader(new InputStreamReader(System.in));
+
+			System.out.println("Server's turn. Enter piece to move: ");
+			String serverPieceToMove = serverReader.readLine();
+			System.out.println("Enter move: ");
+			String serverMove = serverReader.readLine();
+
+//			game.makeMove(serverPieceToMove, serverMove);
+			out.reset();
+			out.writeObject(game);
+			out.flush();
+		} else {
+			String pieceToMove = (String) in.readObject();
+			System.out.println("Server received piece to move: " + pieceToMove);
+
+			String move = (String) in.readObject();
+			System.out.println("Server received move: " + move);
+
+//			game.makeMove(pieceToMove, move);
+
+			out.reset();
+			out.writeObject(game);
+			out.flush();
+		}
+	}
+
+
+
+	public static void main(String[] args) throws Exception {
+		Server server = new Server("localhost", 12129);
+		server.host();
+	}
 }
-*/
