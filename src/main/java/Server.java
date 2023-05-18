@@ -27,18 +27,6 @@ public class Server {
 				while (true) {
 					sendAndReceiveMove(out, in, game);
 				}
-				/*
-
-				while (!game.isGameOver()) {
-					game.switchPlayerTurn();
-					sendAndReceiveMove(out, in, game);
-					game.makeMove(game.getMove());
-					out.reset();
-					out.writeObject(game);
-					out.flush();
-				}
-
-				 */
 
 			} catch (Exception e) {
 				System.err.println (e);

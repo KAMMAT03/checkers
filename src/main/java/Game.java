@@ -421,31 +421,5 @@ public class Game implements Serializable {
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
-//
-//    public boolean isGameOver() {
-//        if (playerTurn) {
-//            // Sprawdzenie, czy czarne pionki mają możliwość ruchu
-//            for (Piece blackPiece : board.getBlack().values()) {
-//                Field field = board.getFieldsWithBlack().get(blackPiece.getId());
-//                showPossibleMoves(field);
-//                if (!field.getPossibleMoves().isEmpty()) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        } else {
-//            // Sprawdzenie, czy białe pionki mają możliwość ruchu
-//            for (Piece whitePiece : board.getWhite().values()) {
-//                Field field = board.getFieldsWithWhite().get(whitePiece.getId());
-//                showPossibleMoves(field);
-//                if (!field.getPossibleMoves().isEmpty()) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//    }
-//
-
 
 }
