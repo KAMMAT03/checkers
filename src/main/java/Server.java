@@ -13,9 +13,9 @@ public class Server {
 	public void host() throws IOException {
 		while (true) {
 			try {
-				System.out.println("Waiting...");
+				System.out.println("Czekanie na połączenie się klienta...");
 				Socket soc = serverSocket.accept();
-				System.out.println("Established");
+				System.out.println("Nawiązano połączenie.");
 
 				ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
 				ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
@@ -41,7 +41,7 @@ public class Server {
 				 */
 
 			} catch (Exception e) {
-				System.err.println("Server exception: " + e);
+				System.err.println (e);
 			}
 		}
 	}
@@ -49,18 +49,18 @@ public class Server {
 	private void sendAndReceiveMove(ObjectOutputStream out, ObjectInputStream in, Game game) throws Exception {
 		if (game.isPlayerTurn()) {
 			BufferedReader serverReader = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Server's turn. Enter piece to move: ");
+			System.out.println("Ruch serwera. Wpisz pionek do przesunięcia: ");
 			String serverPieceToMove = serverReader.readLine();
 
 			if(serverPieceToMove.equals("xx")){
-				throw new Exception("You left.");
+				throw new Exception("Wyszedłeś.");
 			}
 
-			System.out.println("Enter move: ");
+			System.out.println("Wpisz ruch jaki chcesz wykonać: ");
 			String serverMove = serverReader.readLine();
 
 			if(serverMove.equals("xx")){
-				throw new Exception("You left.");
+				throw new Exception("Wyszedłeś.");
 			}
 
 			game.makeMove(serverPieceToMove, serverMove);
@@ -72,14 +72,14 @@ public class Server {
 
 		} else {
 			String pieceToMove = (String) in.readObject();
-			System.out.println("Server received piece to move: " + pieceToMove);
+			System.out.println("Serwer otrzymał pionek do poruszenia: " + pieceToMove);
 
 			if(pieceToMove.equals("xx")){
-				throw new Exception("Other player left.");
+				throw new Exception("Drugi gracz wyszedł.");
 			}
 
 			String move = (String) in.readObject();
-			System.out.println("Server received move: " + move);
+			System.out.println("Serwer otrzymał ruch do wykonania: " + move);
 
 			game.makeMove(pieceToMove, move);
 			game.getBoard().displayBoard();
@@ -93,12 +93,12 @@ public class Server {
 	public void closeGame() throws IOException {
 		if (serverSocket != null && !serverSocket.isClosed()) {
 			serverSocket.close();
-			System.out.println("The game has been closed and the server socket has been shut down.");
+			System.out.println("Gra została zamknięta, a gniazdo serwera zostało wyłączone.");
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
-		Server server = new Server("localhost", 12129);
+		Server server = new Server("localhost", 9899);
 		server.host();
 	}
 }

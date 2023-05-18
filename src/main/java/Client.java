@@ -9,7 +9,7 @@ public class Client {
 	}
 
 	public void connect() throws Exception {
-		System.out.println("Client started");
+		System.out.println("Klient uruchomiony.");
 
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -19,43 +19,31 @@ public class Client {
 		while (true) {
 			sendAndReceiveMove(out, in, game);
 		}
-
-		/* zmienić na to jak sprawdzicie to isGameOver
-
-		while (!game.isGameOver()) {
-			System.out.println(game.getBoard());
-			sendAndReceiveMove(out, in, game);
-			out.reset();
-			out.writeObject(game);
-			out.flush();
-			game = (Game) in.readObject();
-		}
-		 */
 	}
 
 	private void sendAndReceiveMove(ObjectOutputStream out, ObjectInputStream in, Game game) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 		game.getBoard().displayBoard();
-		System.out.println("Waiting for server move...");
+		System.out.println("Czekanie na ruch serwera...");
 		game = (Game) in.readObject();
-		System.out.println("Client moved: " + game);
+		System.out.println("Klient poruszył się: " + game);
 		game.getBoard().displayBoard();
 
-		System.out.println("Enter piece to move: ");
+		System.out.println("Wpisz pionek do przesunięcia: ");
 		String pieceToMove = reader.readLine();
 		out.writeObject(pieceToMove);
 		out.flush();
 
 		if(pieceToMove.equals("xx")){
-			throw new Exception("You left.");
+			throw new Exception("Wyszedłeś.");
 		}
 
-		System.out.println("Enter move: ");
+		System.out.println("Wpisz ruch jaki chcesz wykonać: ");
 		String move = reader.readLine();
 
 		if(move.equals("xx")){
-			throw new Exception("You left.");
+			throw new Exception("Wyszedłeś.");
 		}
 
 		out.writeObject(move);
@@ -63,19 +51,18 @@ public class Client {
 
 		game.makeMove(pieceToMove,move);
 		game.getBoard().displayBoard();
-		//game.setMove(pieceToMove + " " + move); to setMove co mówiłam żeby jakoś dodać bo inaczej nie ma jak tego wywołać
 
 	}
 
 	public void closeGame() throws IOException {
 		if (socket != null && !socket.isClosed()) {
 			socket.close();
-			System.out.println("The game has been closed and the client socket has been shut down.");
+			System.out.println("Gra została zamknięta, a gniazdo klienta wyłączone.");
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
-		Client client = new Client("localhost", 12129);
+		Client client = new Client("localhost", 9899);
 		client.connect();
 	}
 }
