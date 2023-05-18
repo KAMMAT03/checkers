@@ -57,6 +57,26 @@ public class Game implements Serializable {
         }
     }
 
+    public void makeMove(String piece, String move) {
+        List<Integer> wantedMoves = new ArrayList<>();
+
+        if (move.length() == 2 && piece.length() == 2) {
+                int rowIndex = move.charAt(0)-96;
+                int colIndex = move.charAt(1)-48;
+                wantedMoves.add(board.getFieldByIndex(rowIndex, colIndex).getId());
+        } else {
+                throw new IllegalArgumentException("Nieprawidłowy format ruchu: " + piece);
+            }
+
+        Field start = board.getFieldByIndex(piece.charAt(0)-96,
+                piece.charAt(1)-48);
+        Field end = board.getFieldByIndex(move.charAt(0)-96,
+                move.charAt(1)-48);
+
+        if (!this.move(start, end, wantedMoves, board)) {
+            throw new RuntimeException("Nie udało się wykonać ruchu");
+        }
+    }
 
     void canStrike(Field start, Tree parent) {
         if (start.getTopLeft() != null && start.getTopLeft().getTopLeft() != null && start.getTopLeft().getIsOccupied() && !start.getTopLeft().getTopLeft().getIsOccupied() && !start.getTopLeft().getTopLeft().isVisited() && start.getTopLeft().getPiece().getColor() != playerTurn) {
@@ -218,6 +238,10 @@ public class Game implements Serializable {
 
     public boolean getWinner() {
         return winner;
+    }
+
+    public void displayBoard() {
+        board.displayBoard();
     }
 
     public void setWinner(boolean winner) {
