@@ -92,8 +92,8 @@ public class UserInterface implements Serializable {
             } else {
                 System.out.println("Ruch czarnych");
             }
+            game.checkPossibleStartFields(game.getBoard());
             System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
-            game.ckeckPossibleStartFields(game.getBoard());
 
             while (true) {
                 columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;

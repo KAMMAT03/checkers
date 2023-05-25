@@ -7,22 +7,30 @@ public class Tree implements Serializable {
 
     private Field data = null;
 
-    private List<Tree> children = new ArrayList<>();
-    private List<Integer> childrenData = new ArrayList<>();
+    private List<Tree> children;
+    private List<Integer> childrenData;
     private boolean afterStrike;
     private Tree parent = null;
 
     public Tree(Field data) {
         this.data = data;
         afterStrike = false;
+        childrenData = new ArrayList<>();
+        children = new ArrayList<>();
     }
 
-    public Tree addChild(Tree child) {
+    public void addChild(Tree child) {
         child.setParent(this);
         this.children.add(child);
         this.childrenData.add(child.getData().getId());
-        return child;
     }
+
+//    public void setChildrenData() {
+//        childrenData = new ArrayList<>();
+//        for (Tree t : this.children){
+//            this.childrenData.add(t.getData().getId());
+//        }
+//    }
 
     public void addChildren(List<Tree> children) {
         children.forEach(each -> each.setParent(this));
@@ -43,7 +51,7 @@ public class Tree implements Serializable {
     }
     public void reset() {
         this.children.clear();
-        this.childrenData.clear();
+        if (this.childrenData != null) this.childrenData.clear();
     }
 
     public boolean isAfterStrike() {
