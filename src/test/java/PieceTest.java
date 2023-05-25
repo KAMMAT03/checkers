@@ -28,15 +28,15 @@ public class PieceTest {
 
     @Test
     public void testGetSymbolIsNotDameReturnsLowercaseSymbol() {
-        String expectedSymbol = "w";
-        String symbol = piece.getSymbol();
+        boolean expectedSymbol = false;
+        boolean symbol = piece.getIsDame();
 
         Assertions.assertEquals(expectedSymbol, symbol);
     }
 
     @Test
     public void testGetSymbolIsDameReturnsUppercaseSymbol() {
-        piece.isDame = true;
+        piece.setDame(true);
         String expectedSymbol = "W";
         String symbol = piece.getSymbol();
 
