@@ -90,6 +90,28 @@ public class UserInterface implements Serializable {
             game.setGameOver(true);
         }
     }
+    public void intitialChoice(){
+        Scanner scanner = new Scanner(System.in);
+        printMenu();
+        int choice = scanner.nextInt();
+        do {
+            switch (choice) {
+                case 1:
+                    newGame();
+                    break;
+                case 2:
+                    //loadGame();
+                    break;
+                case 3:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Wrong choice. Try again.\n");
+                    break;
+            }
+        } while (choice != 1 && choice != 2 && choice != 3);
+    }
+
 
     public Game getGame() {
         return game;

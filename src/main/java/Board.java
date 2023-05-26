@@ -12,14 +12,6 @@ public class Board implements Serializable {
     private Map<Integer, Field> fieldsWithWhite;
     private Map<Integer, Field> fieldsWithBlack;
 
-    public Piece getPiece(int x, int y){
-        return board[x][y].getPiece();
-    }
-
-    public Field getField(int x, int y) {
-        return board[x][y];
-    }
-
     public Board(int n) {
         this.n = n;
         board = new Field[n][n];
@@ -30,9 +22,13 @@ public class Board implements Serializable {
 
         initializeBoard();
         initializePieces();
-        displayBoard();
+        System.out.println(displayBoard());
+
     }
 
+    public Piece getPiece(int x, int y) {
+        return board[x][y].getPiece();
+    }
 
     private void initializeBoard() {
         for (int i = 0; i < n; i++) {
@@ -121,7 +117,7 @@ public class Board implements Serializable {
 
     void clearVisited() {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n ; j++) {
+            for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
                     board[i][j].setVisited(false);
                     board[i][j].getRoot().reset();
@@ -130,35 +126,57 @@ public class Board implements Serializable {
         }
     }
 
-    void displayBoard() {
-        System.out.print(" ");
+    String displayBoard() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("  ");
+//        System.out.print("  ");
         for (int i = 0; i < n; i++) {
-            System.out.print(" " + (char) ('A' + i));
+            sb.append(" ").append((char) ('A' + i));
+//            System.out.print(" " + (char) ('A' + i));
         }
-        System.out.println();
+        sb.append("\n");
+//        System.out.println();
 
         int id = 1;
 
         for (int i = 0; i < n; i++) {
-            System.out.print(i + 1);
+            if (i + 1 < 10) {
+                sb.append(i).append(1).append(" ");
+//                System.out.print(i + 1 + " ");
+            } else {
+                sb.append(i + 1);
+//                System.out.print(i + 1);
+            }
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
                     Field field = getFieldByIndex(i, j);
                     if (field.getPiece() == null) {
-                        System.out.print(" .");
+                        sb.append(" .");
+//                        System.out.print(" .");
                     } else {
-                        System.out.print(" " + field.getPiece().getSymbol());
+                        sb.append(" ").append(field.getPiece().getSymbol());
+//                        System.out.print(" " + field.getPiece().getSymbol());
                     }
                 } else {
-                    System.out.print("  ");
+                    sb.append("  ");
+//                    System.out.print("  ");
                 }
             }
-            if (i + 1 < 10) {
-                System.out.println("  " + (i + 1) + " ");
-            } else {
-                System.out.println(" " + (i + 1));
-            }
+                sb.append("  ").append(i + 1).append(" ");
+                sb.append("\n");
+//                System.out.println("  " + (i + 1) + " ");
+
         }
+        sb.append("  ");
+//        System.out.print("  ");
+        for (int i = 0; i < n; i++) {
+            sb.append(" ").append((char) ('A' + i));
+//            System.out.print(" " + (char) ('A' + i));
+        }
+        sb.append("\n");
+//        System.out.println();
+        return sb.toString();
     }
+
 
 }
