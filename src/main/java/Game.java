@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Game implements Serializable {
 
@@ -23,6 +24,15 @@ public class Game implements Serializable {
         board = new Board(n);
         playerTurn = true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return playerTurn == game.playerTurn && n == game.n && gameOver == game.gameOver && movesCount == game.movesCount && winner == game.winner && maxMovesCount == game.maxMovesCount && maxForFields == game.maxForFields && Objects.equals(board, game.board) && Objects.equals(possibleStartFields, game.possibleStartFields);
+    }
+
 
     void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
@@ -241,12 +251,12 @@ public class Game implements Serializable {
         List<Integer> wantedMoves = new ArrayList<>();
 
         if (move.length() == 2 && piece.length() == 2) {
-                int rowIndex = move.charAt(0)-96;
-                int colIndex = move.charAt(1)-48;
-                wantedMoves.add(board.getFieldByIndex(rowIndex, colIndex).getId());
+            int rowIndex = move.charAt(0)-96;
+            int colIndex = move.charAt(1)-48;
+            wantedMoves.add(board.getFieldByIndex(rowIndex, colIndex).getId());
         } else {
-                throw new IllegalArgumentException("Nieprawidłowy format ruchu: " + piece);
-            }
+            throw new IllegalArgumentException("Nieprawidłowy format ruchu: " + piece);
+        }
 
         Field start = board.getFieldByIndex(piece.charAt(0)-96,
                 piece.charAt(1)-48);

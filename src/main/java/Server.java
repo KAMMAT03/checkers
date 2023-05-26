@@ -12,28 +12,32 @@ public class Server {
 
 	public void host() throws IOException {
 		while (true) {
-			try {
-				System.out.println("Czekanie na połączenie się klienta...");
-				Socket soc = serverSocket.accept();
-				System.out.println("Nawiązano połączenie.");
+			System.out.println("Czekanie na połączenie się klienta...");
+			Socket soc = serverSocket.accept();
+			System.out.println("Nawiązano połączenie.");
 
-				ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
-				ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
-
-				Game game = new Game(8); // Tworzymy nową instancję gry
-
-				out.writeObject(game);
-
-				while (true) {
-					sendAndReceiveMove(out, in, game);
-				}
-
-			} catch (Exception e) {
-				System.err.println (e);
-			}
+			// Handle each client connection in a separate thread
+			new Thread(() -> handleClient(soc)).start();
 		}
 	}
 
+	private void handleClient(Socket soc) {
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
+
+			Game game = new Game(8); // Tworzymy nową instancję gry
+
+			out.writeObject(game);
+
+			while (true) {
+				sendAndReceiveMove(out, in, game);
+			}
+
+		} catch (Exception e) {
+			System.err.println (e);
+		}
+	}
 	private void sendAndReceiveMove(ObjectOutputStream out, ObjectInputStream in, Game game) throws Exception {
 		if (game.isPlayerTurn()) {
 			BufferedReader serverReader = new BufferedReader(new InputStreamReader(System.in));

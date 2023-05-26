@@ -48,6 +48,6 @@ public class FileManagerTest {
         // Usuwanie pliku
         File file = new File(TEST_GAME_STATE_FILE);
         file.delete();
-    }
+    }   
 
 }

@@ -1,17 +1,19 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.*;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class FileManager {
-    //powinno być private ale nie działa inaczej na ten moment
-    public static final String GAME_STATE_FILE = "game_state.ser";
+    private static final String GAME_STATE_FILE = "game_state.ser";
     private static final String OPTIONS_FILE = "options.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public void saveGameState(Game game, String path) {
-        try (FileOutputStream fileOut = new FileOutputStream(path);
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(game);
+        try (FileWriter fileWriter = new FileWriter(path)) {
+            String json = gson.toJson(game);
+            fileWriter.write(json);
             System.out.println("Zapisano stan gry w pliku: " + path);
         } catch (IOException e) {
             System.out.println("Wystąpił błąd podczas zapisywania stanu gry: " + e.getMessage());
@@ -19,12 +21,11 @@ public class FileManager {
     }
 
     public Game loadGameState(String path) {
-        try (FileInputStream fileIn = new FileInputStream(path);
-             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-            Game game = (Game) objectIn.readObject();
+        try (FileReader fileReader = new FileReader(path)) {
+            Game game = gson.fromJson(fileReader, Game.class);
             System.out.println("Wczytano stan gry z pliku: " + path);
             return game;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Wystąpił błąd podczas wczytywania stanu gry: " + e.getMessage());
             return null;
         }
@@ -32,7 +33,8 @@ public class FileManager {
 
     public void saveOptions(UserInterface userInterface) {
         try (FileWriter fileWriter = new FileWriter(OPTIONS_FILE)) {
-            gson.toJson(userInterface, fileWriter);
+            String json = gson.toJson(userInterface);
+            fileWriter.write(json);
             System.out.println("Zapisano opcje interfejsu użytkownika w pliku: " + OPTIONS_FILE);
         } catch (IOException e) {
             System.out.println("Wystąpił błąd podczas zapisywania opcji interfejsu użytkownika: " + e.getMessage());

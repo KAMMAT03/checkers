@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class UserInterface implements Serializable {
     private static int boardSize;
     private String playerName;
+    private Game game;
 
     public UserInterface() {
         Scanner scanner = new Scanner(System.in);
@@ -28,6 +29,76 @@ public class UserInterface implements Serializable {
             }
         } while (choice != 1 && choice != 2 && choice != 3);
     }
+    public void newMove() {
+        // Move the code for making a move from your newGame method to here
+        int rowStart;
+        int columnStart;
+        int rowMove;
+        int columnMove;
+        boolean turn;
+        int index;
+
+        List<Integer> indexList = new ArrayList<>();
+
+        Scanner scanner = new Scanner(System.in);
+
+        turn = game.getPlayerTurn();
+        Field endMove = null;
+
+        if (game.getPlayerTurn()) {
+            System.out.println("Ruch białych");
+        } else {
+            System.out.println("Ruch czarnych");
+        }
+        System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
+        game.checkPossibleStartFields(game.getBoard());
+
+        while (true) {
+            columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+            rowStart = scanner.nextInt() - 1;
+            int id = rowStart + 100 * columnStart;
+            if (game.getPossibleStartFields().contains(id)) break;
+            System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
+        }
+        game.getPossibleStartFields().clear();
+
+
+        while (turn == game.getPlayerTurn()) {
+            System.out.println("Podaj litere kolumny, a potem numer rzedu planowanych ruchow, a jesli koniec to x: ");
+            while (true) {
+                columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+                if (columnMove == 23) break;
+                rowMove = scanner.nextInt() - 1;
+                index = rowMove + 100 * columnMove;
+                indexList.add(index);
+                if (indexList.size() == 1) {
+                    endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
+                }
+            }
+            game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+            indexList.clear();
+        }
+        game.getBoard().displayBoard();
+        if (game.getBoard().getWhite().isEmpty() || game.getBoard().getBlack().isEmpty()) {
+            if (game.getBoard().getWhite().isEmpty()) {
+                game.setWinner(true);
+                System.out.println("Wygraly czarne");
+            } else if (game.getBoard().getBlack().isEmpty()) {
+                game.setWinner(false);
+                System.out.println("Wygraly biale");
+            }
+            game.setGameOver(true);
+        }
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
 
     public static void printMenu() {
         System.out.println("Welcome to Checkers!");
@@ -92,8 +163,8 @@ public class UserInterface implements Serializable {
             } else {
                 System.out.println("Ruch czarnych");
             }
-            game.checkPossibleStartFields(game.getBoard());
             System.out.println("Podaj litere kolumny, a potem numer rzedu wybranego pionka: \n");
+            game.checkPossibleStartFields(game.getBoard());
 
             while (true) {
                 columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
