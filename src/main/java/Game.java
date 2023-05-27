@@ -5,9 +5,10 @@ import java.util.Objects;
 
 public class Game implements Serializable {
 
-
     private final Board board;
     private final List<Integer> possibleStartFields;
+    private List<Field> strikeFields = new ArrayList<>();
+
     private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
     private int n; //wielkość planszy (n x n)
     private boolean gameOver;
@@ -247,6 +248,10 @@ public class Game implements Serializable {
         }
     }
 
+    public List<Field> getStrikeFields() {
+        return strikeFields;
+    }
+
     public void makeMove(String piece, String move) {
         List<Integer> wantedMoves = new ArrayList<>();
 
@@ -263,7 +268,7 @@ public class Game implements Serializable {
         Field end = board.getFieldByIndex(move.charAt(0)-96,
                 move.charAt(1)-48);
 
-        if (!this.move(start, end, wantedMoves, board)) {
+        if (!this.move(start, end, wantedMoves, strikeFields, board)) {
             throw new RuntimeException("Nie udało się wykonać ruchu");
         }
     }
@@ -301,8 +306,7 @@ public class Game implements Serializable {
         return child;
     }
 
-    public boolean move(Field start, Field endMove, List<Integer> wantedMoves, Board board) {  // Wykonuje ruch z pola start na pole end
-        List<Field> strikeFields = new ArrayList<>();
+    public boolean move(Field start, Field endMove, List<Integer> wantedMoves, List<Field> strikeFields, Board board) {  // Wykonuje ruch z pola start na pole end
         maxMovesCount = 0;
         movesCount = 0;
         Field end;

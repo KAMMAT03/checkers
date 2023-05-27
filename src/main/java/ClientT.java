@@ -119,7 +119,7 @@ public class ClientT {
                         endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
                     }
                 }
-                game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+                game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getStrikeFields(), game.getBoard());
                 indexList.clear();
                 dout.writeBoolean(turn == game.getPlayerTurn());
                 dout.flush();

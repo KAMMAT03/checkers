@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInterface implements Serializable {
+public class UserInterface extends FileManager implements Serializable {
     private static int boardSize;
     private String playerName;
     private Game game;
@@ -75,7 +75,7 @@ public class UserInterface implements Serializable {
                     endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
                 }
             }
-            game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+            game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList,game.getStrikeFields(), game.getBoard());
             indexList.clear();
         }
         game.getBoard().displayBoard();
@@ -210,7 +210,7 @@ public class UserInterface implements Serializable {
                         endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
                     }
                 }
-                game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+                game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList,game.getStrikeFields(), game.getBoard());
                 indexList.clear();
             }
             game.getBoard().displayBoard();
