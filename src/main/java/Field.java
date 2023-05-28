@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Field implements Serializable {
 
-    int rowIndex;
-    int colIndex;
-    int id;
+    private int rowIndex;
+    private int colIndex;
+    private int id;
     private boolean isOccupied = false;
     private Field topLeft;
     private Field topRight;
@@ -106,16 +106,8 @@ public class Field implements Serializable {
         return colIndex;
     }
 
-    public boolean isWhiteDame() {
-        return whiteDame;
-    }
-
     public void setWhiteDame(boolean whiteDame) {
         this.whiteDame = whiteDame;
-    }
-
-    public boolean isBlackDame() {
-        return blackDame;
     }
 
     public void setBlackDame(boolean blackDame) {

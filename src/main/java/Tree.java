@@ -25,18 +25,6 @@ public class Tree implements Serializable {
         this.childrenData.add(child.getData().getId());
     }
 
-//    public void setChildrenData() {
-//        childrenData = new ArrayList<>();
-//        for (Tree t : this.children){
-//            this.childrenData.add(t.getData().getId());
-//        }
-//    }
-
-    public void addChildren(List<Tree> children) {
-        children.forEach(each -> each.setParent(this));
-        this.children.addAll(children);
-    }
-
     public List<Tree> getChildren() {
         return children;
     }
@@ -69,17 +57,10 @@ public class Tree implements Serializable {
         return data;
     }
 
-    public void setData(Field data) {
-        this.data = data;
-    }
-
     private void setParent(Tree parent) {
         this.parent = parent;
     }
 
-    public Tree getParent() {
-        return parent;
-    }
     public int getMaxDepth() {
         return getMaxDepth(this);
     }

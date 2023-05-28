@@ -31,9 +31,9 @@ public class FileManager {
         }
     }
 
-    public void saveOptions(UserInterface userInterface) {
+    public void saveOptions(Client client) {
         try (FileWriter fileWriter = new FileWriter(OPTIONS_FILE)) {
-            String json = gson.toJson(userInterface);
+            String json = gson.toJson(client);
             fileWriter.write(json);
             System.out.println("Zapisano opcje interfejsu użytkownika w pliku: " + OPTIONS_FILE);
         } catch (IOException e) {
@@ -41,10 +41,10 @@ public class FileManager {
         }
     }
 
-    public void loadOptions(UserInterface userInterface) {
+    public void loadOptions(Client client) {
         try (FileReader fileReader = new FileReader(OPTIONS_FILE)) {
-            UserInterface options = gson.fromJson(fileReader, UserInterface.class);
-            userInterface.setOptions(options);
+            Client options = gson.fromJson(fileReader, Client.class);
+            client.setOptions(options);
             System.out.println("Wczytano opcje interfejsu użytkownika z pliku: " + OPTIONS_FILE);
         } catch (IOException e) {
             System.out.println("Wystąpił błąd podczas wczytywania opcji interfejsu użytkownika: " + e.getMessage());

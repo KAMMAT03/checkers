@@ -26,10 +26,6 @@ public class Board implements Serializable {
 
     }
 
-    public Piece getPiece(int x, int y) {
-        return board[x][y].getPiece();
-    }
-
     private void initializeBoard() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -101,10 +97,6 @@ public class Board implements Serializable {
 
     public Field getFieldByIndex(int i, int j) {
         return board[i][j];
-    }
-
-    public Field[][] getBoard() {
-        return board;
     }
 
     public Map<Integer, Piece> getWhite() {

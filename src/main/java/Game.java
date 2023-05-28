@@ -7,8 +7,6 @@ public class Game implements Serializable {
 
     private final Board board;
     private final List<Integer> possibleStartFields;
-    private List<Field> strikeFields = new ArrayList<>();
-
     private boolean playerTurn; //określa czyja jest tura (true - białe, false - czarne)
     private int n; //wielkość planszy (n x n)
     private boolean gameOver;
@@ -35,10 +33,10 @@ public class Game implements Serializable {
     }
 
 
-    void showPossibleMoves(Field start) {
+    private void showPossibleMoves(Field start) {
         if (start.getTopLeft() != null) {
             if (start.getPiece().getIsDame()) {
-                checkDameMove(start, !playerTurn, start.getRoot(), 1, null);
+                checkDameMove(start, start.getRoot(), 1, null);
             } else {
                 checkMove(start, start.getTopLeft(), start.getTopLeft().getTopLeft(), !playerTurn);
             }
@@ -46,7 +44,7 @@ public class Game implements Serializable {
         }
         if (start.getTopRight() != null) {
             if (start.getPiece().getIsDame()) {
-                checkDameMove(start, !playerTurn, start.getRoot(), 2, null);
+                checkDameMove(start, start.getRoot(), 2, null);
             } else {
                 checkMove(start, start.getTopRight(), start.getTopRight().getTopRight(), !playerTurn);
             }
@@ -54,7 +52,7 @@ public class Game implements Serializable {
         }
         if (start.getBottomLeft() != null) {
             if (start.getPiece().getIsDame()) {
-                checkDameMove(start, !playerTurn, start.getRoot(), 3, null);
+                checkDameMove(start, start.getRoot(), 3, null);
             } else {
                 checkMove(start, start.getBottomLeft(), start.getBottomLeft().getBottomLeft(), playerTurn);
             }
@@ -62,7 +60,7 @@ public class Game implements Serializable {
         }
         if (start.getBottomRight() != null) {
             if (start.getPiece().getIsDame()) {
-                checkDameMove(start, !playerTurn, start.getRoot(), 4, null);
+                checkDameMove(start, start.getRoot(), 4, null);
             } else {
                 checkMove(start, start.getBottomRight(), start.getBottomRight().getBottomRight(), playerTurn);
             }
@@ -71,12 +69,12 @@ public class Game implements Serializable {
     } // Pokazuje wszystkie możliwe ruchy dla danego pionka. Przyjmuje referencje do pola dla którego ruchy sprawdzamy.
       // Zwraca listę referencji do pól na które możemy się poruszyć.
 
-    void checkDameMove(Field current, boolean color, Tree parent, int direction, Tree child){
+    private void checkDameMove(Field current, Tree parent, int direction, Tree child){
         Tree newChild;
         switch (direction) {
             case 1 -> {
                 if (parent.isAfterStrike() && child != null) {
-                    showPossibleDameMoves(current, color, direction, child);
+                    showPossibleDameMoves(current, direction, child);
                 }
                 if (current.getTopLeft() != null && !current.getTopLeft().getIsOccupied()) {
                     newChild = new Tree(current.getTopLeft());
@@ -84,7 +82,7 @@ public class Game implements Serializable {
                     if (parent.isAfterStrike()){
                         current.getTopLeft().setStriked(current.getStriked());
                     }
-                    checkDameMove(current.getTopLeft(), color, parent, direction, newChild);
+                    checkDameMove(current.getTopLeft(), parent, direction, newChild);
                 } else if (current.getTopLeft() != null && current.getTopLeft().getTopLeft() != null
                         && !current.getTopLeft().getTopLeft().getIsOccupied()
                         && current.getTopLeft().getIsOccupied()
@@ -94,12 +92,12 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getTopLeft());
                     parent.setAfterStrike(true);
-                    checkDameMove(current.getTopLeft().getTopLeft(), color, parent, direction, newChild);
+                    checkDameMove(current.getTopLeft().getTopLeft(), parent, direction, newChild);
                 }
             }
             case 2 -> {
                 if (parent.isAfterStrike() && child != null) {
-                    showPossibleDameMoves(current, color, direction, child);
+                    showPossibleDameMoves(current, direction, child);
                 }
                 if (current.getTopRight() != null && !current.getTopRight().getIsOccupied()) {
                     newChild = new Tree(current.getTopRight());
@@ -107,7 +105,7 @@ public class Game implements Serializable {
                     if (parent.isAfterStrike()){
                         current.getTopRight().setStriked(current.getStriked());
                     }
-                    checkDameMove(current.getTopRight(), color, parent, direction, newChild);
+                    checkDameMove(current.getTopRight(), parent, direction, newChild);
                 } else if (current.getTopRight() != null && current.getTopRight().getTopRight() != null
                         && !current.getTopRight().getTopRight().getIsOccupied()
                         && current.getTopRight().getIsOccupied()
@@ -117,12 +115,12 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getTopRight());
                     parent.setAfterStrike(true);
-                    checkDameMove(current.getTopRight().getTopRight(), color, parent, direction, newChild);
+                    checkDameMove(current.getTopRight().getTopRight(), parent, direction, newChild);
                 }
             }
             case 3 -> {
                 if (parent.isAfterStrike() && child != null) {
-                    showPossibleDameMoves(current, color, direction, child);
+                    showPossibleDameMoves(current, direction, child);
                 }
                 if (current.getBottomRight() != null && !current.getBottomRight().getIsOccupied()) {
                     newChild = new Tree(current.getBottomRight());
@@ -130,7 +128,7 @@ public class Game implements Serializable {
                     if (parent.isAfterStrike()){
                         current.getBottomRight().setStriked(current.getStriked());
                     }
-                    checkDameMove(current.getBottomRight(), color, parent, direction, newChild);
+                    checkDameMove(current.getBottomRight(), parent, direction, newChild);
                 } else if (current.getBottomRight() != null && current.getBottomRight().getBottomRight() != null
                         && !current.getBottomRight().getBottomRight().getIsOccupied()
                         && current.getBottomRight().getIsOccupied()
@@ -140,12 +138,12 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getBottomRight());
                     parent.setAfterStrike(true);
-                    checkDameMove(current.getBottomRight().getBottomRight(), color, parent, direction, newChild);
+                    checkDameMove(current.getBottomRight().getBottomRight(), parent, direction, newChild);
                 }
             }
             case 4 -> {
                 if (parent.isAfterStrike() && child != null) {
-                    showPossibleDameMoves(current, color, direction, child);
+                    showPossibleDameMoves(current, direction, child);
                 }
                 if (current.getBottomLeft() != null && !current.getBottomLeft().getIsOccupied()) {
                     newChild = new Tree(current.getBottomLeft());
@@ -153,7 +151,7 @@ public class Game implements Serializable {
                     if (parent.isAfterStrike()){
                         current.getBottomLeft().setStriked(current.getStriked());
                     }
-                    checkDameMove(current.getBottomLeft(), color, parent, direction, newChild);
+                    checkDameMove(current.getBottomLeft(), parent, direction, newChild);
                 } else if (current.getBottomLeft() != null && current.getBottomLeft().getBottomLeft() != null
                         && !current.getBottomLeft().getBottomLeft().getIsOccupied()
                         && current.getBottomLeft().getIsOccupied()
@@ -163,12 +161,12 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getBottomLeft());
                     parent.setAfterStrike(true);
-                    checkDameMove(current.getBottomLeft().getBottomLeft(), color, parent, direction, newChild);
+                    checkDameMove(current.getBottomLeft().getBottomLeft(), parent, direction, newChild);
                 }
             }
         }
     }
-    void showPossibleDameMoves(Field current, boolean color, int direction, Tree parent){
+    private void showPossibleDameMoves(Field current, int direction, Tree parent){
         Field tempField = current;
         if (direction == 1 || direction == 3){
             while (tempField.getTopRight() != null) {
@@ -181,7 +179,7 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getTopRight());
                     parent.setAfterStrike(true);
-                    checkDameMove(tempField.getTopRight().getTopRight(), color, parent, 2, newChild);
+                    checkDameMove(tempField.getTopRight().getTopRight(), parent, 2, newChild);
                     break;
                 } else break;
             }
@@ -196,7 +194,7 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getBottomLeft());
                     parent.setAfterStrike(true);
-                    checkDameMove(tempField.getBottomLeft().getBottomLeft(), color, parent, 4, newChild);
+                    checkDameMove(tempField.getBottomLeft().getBottomLeft(), parent, 4, newChild);
                     break;
                 } else break;
             }
@@ -211,7 +209,7 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getTopLeft());
                     parent.setAfterStrike(true);
-                    checkDameMove(tempField.getTopLeft().getTopLeft(), color, parent, 1, newChild);
+                    checkDameMove(tempField.getTopLeft().getTopLeft(), parent, 1, newChild);
                     break;
                 } else break;
             }
@@ -226,14 +224,14 @@ public class Game implements Serializable {
                     parent.addChild(newChild);
                     newChild.getData().setStriked(current.getBottomRight());
                     parent.setAfterStrike(true);
-                    checkDameMove(tempField.getBottomRight().getBottomRight(), color, parent, 3, newChild);
+                    checkDameMove(tempField.getBottomRight().getBottomRight(), parent, 3, newChild);
                     break;
                 } else break;
             }
         }
     }
 
-    void checkMove(Field start, Field oneAway, Field twoAway, boolean color) {
+    private void checkMove(Field start, Field oneAway, Field twoAway, boolean color) {
         if (!oneAway.getIsOccupied() && color) {
             start.addPossibleMoves(oneAway.getId());
         } else if (twoAway != null && !twoAway.getIsOccupied() && oneAway.getIsOccupied()
@@ -248,32 +246,8 @@ public class Game implements Serializable {
         }
     }
 
-    public List<Field> getStrikeFields() {
-        return strikeFields;
-    }
 
-    public void makeMove(String piece, String move) {
-        List<Integer> wantedMoves = new ArrayList<>();
-
-        if (move.length() == 2 && piece.length() == 2) {
-            int rowIndex = move.charAt(0)-96;
-            int colIndex = move.charAt(1)-48;
-            wantedMoves.add(board.getFieldByIndex(rowIndex, colIndex).getId());
-        } else {
-            throw new IllegalArgumentException("Nieprawidłowy format ruchu: " + piece);
-        }
-
-        Field start = board.getFieldByIndex(piece.charAt(0)-96,
-                piece.charAt(1)-48);
-        Field end = board.getFieldByIndex(move.charAt(0)-96,
-                move.charAt(1)-48);
-
-        if (!this.move(start, end, wantedMoves, strikeFields, board)) {
-            throw new RuntimeException("Nie udało się wykonać ruchu");
-        }
-    }
-
-    void canStrike(Field start, Tree parent) {
+    private void canStrike(Field start, Tree parent) {
         if (start.getTopLeft() != null && start.getTopLeft().getTopLeft() != null && start.getTopLeft().getIsOccupied() && !start.getTopLeft().getTopLeft().getIsOccupied() && !start.getTopLeft().getTopLeft().isVisited() && start.getTopLeft().getPiece().getColor() != playerTurn) {
             Tree child = strike(start.getTopLeft(), start.getTopLeft().getTopLeft(), parent);
             canStrike(start.getTopLeft().getTopLeft(), child);
@@ -296,7 +270,7 @@ public class Game implements Serializable {
         }
     }
 
-    Tree strike(Field oneAway, Field twoAway, Tree parent) {
+    private Tree strike(Field oneAway, Field twoAway, Tree parent) {
         movesCount++;
         if (movesCount > maxMovesCount) maxMovesCount = movesCount;
         Tree child = new Tree(twoAway);
@@ -306,16 +280,15 @@ public class Game implements Serializable {
         return child;
     }
 
-    public boolean move(Field start, Field endMove, List<Integer> wantedMoves, List<Field> strikeFields, Board board) {  // Wykonuje ruch z pola start na pole end
+    public boolean move(Field start, Field endMove, List<Integer> wantedMoves, Board board) {  // Wykonuje ruch z pola start na pole end
+        List<Field> strikeFields = new ArrayList<>();
         maxMovesCount = 0;
         movesCount = 0;
         Field end;
         Tree temp = start.getRoot();
         if (maxForFields > 0 && maxForFields == wantedMoves.size()) {
             for (Integer wantedMove : wantedMoves) {
-//                temp.setChildrenData();
                 if (!temp.getChildrenData().contains(wantedMove)) {// zle bicie wykonane, ponownie wybrac ruch
-//                    System.out.println("Wybrano zle pola, prosze wybrac ponownie");
                     return false;
                 }
                 int index = temp.getChildrenData().indexOf(wantedMove);
@@ -359,8 +332,7 @@ public class Game implements Serializable {
                 start.setPiece(null);
             } else {
                 System.out.println("Niepoprawny ruch, prosze wybrac inne pole");
-                return false; //w tym miejscu powinien byc komunikat, ze nie mozna wykonac takiego ruchu i gracz powinien
-                //wybrac inne pole
+                return false;
             }
         }
         playerTurn = !playerTurn;
@@ -371,7 +343,7 @@ public class Game implements Serializable {
         return possibleStartFields;
     }
 
-    void checkPossibleStartFields(Board board) {
+    public void checkPossibleStartFields(Board board) {
         maxForFields = 0;
         if (playerTurn) {
             for (Field f : board.getFieldsWithWhite().values()) {
@@ -390,9 +362,6 @@ public class Game implements Serializable {
             maxMovesCount = f.getRoot().getMaxDepth() - 1;
             if (!f.getRoot().isAfterStrike()){
                 f.setPossibleMoves(f.getRoot().getChildrenData());
-//                for (Tree t : f.getRoot().getChildren()){
-//                    f.addPossibleMoves(t.getData().getId());
-//                }
             }
         }
         if (maxMovesCount > maxForFields) {
@@ -410,10 +379,6 @@ public class Game implements Serializable {
         return n;
     }
 
-    public void setN(int n) {
-        this.n = n;
-    }
-
     public boolean getGameOver() {
         return gameOver;
     }
@@ -422,24 +387,12 @@ public class Game implements Serializable {
         this.gameOver = gameOver;
     }
 
-    public void setGameOver(Boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
     public Boolean getPlayerTurn() {
         return playerTurn;
     }
 
-    public boolean isWinner() {
-        return winner;
-    }
-
     public boolean isPlayerTurn() {
         return playerTurn;
-    }
-
-    public void setPlayerTurn(boolean playerTurn) {
-        this.playerTurn = playerTurn;
     }
 
     public Board getBoard() {
@@ -448,10 +401,6 @@ public class Game implements Serializable {
 
     public boolean getWinner() {
         return winner;
-    }
-
-    public void displayBoard() {
-        board.displayBoard();
     }
 
     public void setWinner(boolean winner) {
