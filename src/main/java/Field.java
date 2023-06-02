@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Field implements Serializable {
 
@@ -134,5 +135,18 @@ public class Field implements Serializable {
 
     public boolean getIsOccupied() {
         return isOccupied;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Field field = (Field) o;
+        return rowIndex == field.rowIndex && colIndex == field.colIndex && id == field.id && isOccupied == field.isOccupied && visited == field.visited && whiteDame == field.whiteDame && blackDame == field.blackDame && Objects.equals(topLeft, field.topLeft) && Objects.equals(topRight, field.topRight) && Objects.equals(bottomLeft, field.bottomLeft) && Objects.equals(bottomRight, field.bottomRight) && Objects.equals(striked, field.striked) && Objects.equals(root, field.root) && Objects.equals(possibleMoves, field.possibleMoves) && Objects.equals(piece, field.piece);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rowIndex, colIndex, id, isOccupied, topLeft, topRight, bottomLeft, bottomRight, striked, root, visited, whiteDame, blackDame, possibleMoves, piece);
     }
 }

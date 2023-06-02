@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientGUI extends JFrame {
 
@@ -84,7 +83,7 @@ public class ClientGUI extends JFrame {
         JRadioButton smallButton = new JRadioButton("Small (8x8)");
         smallButton.addActionListener(e -> {
             //prob some func to mange game here
-            boardSize =8;
+            boardSize = 8;
             dialogFrame.dispose();
             Game game = new Game(boardSize);
             BoardGUI board = new BoardGUI(boardSize,game,true);

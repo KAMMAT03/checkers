@@ -1,9 +1,7 @@
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 //TODO Czemu to wyrzuca blad po rozłączeniu Clienta?
 public class Server {
@@ -13,6 +11,8 @@ public class Server {
         DataInputStream din = new DataInputStream(s.getInputStream());
         DataOutputStream dout = new DataOutputStream(s.getOutputStream());
         Scanner scanner = new Scanner(System.in);
+
+        CheckersBoardGUI gui = new CheckersBoardGUI();
 
         boolean gameOver = false;
         int columnStart;
@@ -39,12 +39,17 @@ public class Server {
                 msg1 = din.readUTF();
                 System.out.println(msg1);
                 while (true) {
-                    columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
+                    Field field = gui.lastClickedField;
+                    while (field.equals(gui.lastClickedField)) {}
+                    System.out.println("kloc");
+                    columnStart = field.getColIndex();
+                    rowStart = field.getRowIndex();
+
                     dout.writeInt(columnStart);
 //                    dout.flush();
-                    rowStart = scanner.nextInt() - 1;
+
                     dout.writeInt(rowStart);
-                    dout.flush();
+//                    dout.flush();
                     correctStartField = din.readBoolean();
                     if (correctStartField) break;
                     System.out.println("Wybrano zly pionek, prosze wybrac ponownie");

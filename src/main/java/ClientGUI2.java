@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
     public class ClientGUI2 extends JFrame {
 
         public static int boardSize;

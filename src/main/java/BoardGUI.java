@@ -10,7 +10,7 @@ public class BoardGUI extends JPanel {
 
     private int boardSize;
     private Game game;
-    private boolean owner; // mayby good to know
+    private boolean owner; // maybe good to know
 
     public BoardGUI(int boardSize,Game game,boolean owner) {
         this.boardSize = boardSize;

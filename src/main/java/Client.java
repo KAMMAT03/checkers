@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -20,12 +19,12 @@ public Client() throws IOException {
     public static void main(String[] args) throws Exception {
         Client client = new Client();
 
-        EZGui ezGui = new EZGui();
+//        EZGui ezGui = new EZGui();
         Scanner scanner = new Scanner(System.in);
 
         printMenu();
-        int choice;
-            choice = ezGui.init();
+        int choice = scanner.nextInt();
+//            choice = ezGui.init();
             switch (choice) {
                 case 1:
                     break;
