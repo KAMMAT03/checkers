@@ -20,14 +20,15 @@ public Client() throws IOException {
     public static void main(String[] args) throws Exception {
         Client client = new Client();
 
+        EZGui ezGui = new EZGui();
         Scanner scanner = new Scanner(System.in);
+
         printMenu();
         int choice;
-        do {
-            choice = scanner.nextInt();
+            choice = ezGui.init();
             switch (choice) {
                 case 1:
-                    continue;
+                    break;
                 case 2:
                     //loadGame();
                     break;
@@ -38,7 +39,6 @@ public Client() throws IOException {
                     System.out.println("Wrong choice. Try again.\n");
                     break;
             }
-        } while (choice != 1 && choice != 2 && choice != 3);
 
         chooseBoardSize();
         Game game = new Game(boardSize);
