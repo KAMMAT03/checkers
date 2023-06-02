@@ -41,7 +41,7 @@ public class Server {
                 while (true) {
                     columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
                     dout.writeInt(columnStart);
-                    dout.flush();
+//                    dout.flush();
                     rowStart = scanner.nextInt() - 1;
                     dout.writeInt(rowStart);
                     dout.flush();
@@ -56,7 +56,7 @@ public class Server {
                     while (true) {
                         columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
                         dout.writeInt(columnMove);
-                        dout.flush();
+//                        dout.flush();
                         if (columnMove == 23) {
                             break;
                         }

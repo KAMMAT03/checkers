@@ -46,6 +46,7 @@ public class Client {
         List<Integer> indexList = new ArrayList<>();
 
         while (!game.getGameOver()) {
+            boolean color = game.getPlayerTurn();
             turn = game.getPlayerTurn();
             Field endMove = null;
             String board = game.getBoard().displayBoard();
@@ -87,6 +88,9 @@ public class Client {
                 }
                 if (game.isPlayerTurn()) {
                     System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
+                } else {
+                    dout.writeBoolean(false);
+                    dout.flush();
                 }
             }
             game.getPossibleStartFields().clear();
@@ -116,7 +120,7 @@ public class Client {
                 }
                 game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
                 indexList.clear();
-                if (game.isPlayerTurn()) {
+                if (!color) {
                     boolean msgBool = turn == game.getPlayerTurn();
                     dout.writeBoolean(msgBool);
                     dout.flush();

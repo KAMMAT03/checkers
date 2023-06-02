@@ -234,6 +234,8 @@ public class Game implements Serializable {
     private void checkMove(Field start, Field oneAway, Field twoAway, boolean color) {
         if (!oneAway.getIsOccupied() && color) {
             start.addPossibleMoves(oneAway.getId());
+            movesCount++;
+            if (movesCount > maxMovesCount) maxMovesCount = movesCount;
         } else if (twoAway != null && !twoAway.getIsOccupied() && oneAway.getIsOccupied()
                 && oneAway.getPiece().getColor() != playerTurn) {
             movesCount++;
@@ -286,7 +288,7 @@ public class Game implements Serializable {
         movesCount = 0;
         Field end;
         Tree temp = start.getRoot();
-        if (maxForFields > 0 && maxForFields == wantedMoves.size()) {
+        if (maxForFields > 0 && maxForFields == wantedMoves.size() && !temp.getChildren().isEmpty()) {
             for (Integer wantedMove : wantedMoves) {
                 if (!temp.getChildrenData().contains(wantedMove)) {// zle bicie wykonane, ponownie wybrac ruch
                     return false;
