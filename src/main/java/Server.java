@@ -40,10 +40,18 @@ public class Server {
                 System.out.println(msg1);
                 while (true) {
                     Field field = gui.lastClickedField;
-                    while (field.equals(gui.lastClickedField)) {System.out.println(gui.lastClickedField);System.out.println(field);}
+                    while (field.equals(gui.lastClickedField)) {
+                        try {
+                            gui.fieldChangedLatch.await();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     System.out.println("kloc");
                     columnStart = field.getColIndex();
                     rowStart = field.getRowIndex();
+
 
                     dout.writeInt(columnStart);
 //                    dout.flush();

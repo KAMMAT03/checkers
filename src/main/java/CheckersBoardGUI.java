@@ -3,9 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class CheckersBoardGUI extends JFrame implements ActionListener {
 
+    public CountDownLatch fieldChangedLatch = new CountDownLatch(1);
     private static final int BOARD_SIZE = 8;
     private static final int SQUARE_SIZE = 70;
     public Field lastClickedField;
@@ -106,7 +108,7 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         JButton clickedSquare = (JButton) e.getSource();
         Field field = (Field) clickedSquare.getClientProperty("field");
         this.lastClickedField = field;
-        System.out.println(field);
+        fieldChangedLatch.countDown();
     }
 
     public static void main(String[] args) {

@@ -19,7 +19,7 @@ public Client() throws IOException {
     public static void main(String[] args) throws Exception {
         Client client = new Client();
 
-//        EZGui ezGui = new EZGui();
+        CheckersBoardGUI gui = new CheckersBoardGUI();
         Scanner scanner = new Scanner(System.in);
 
         printMenu();
@@ -76,8 +76,16 @@ public Client() throws IOException {
             while (true) {
                 int id;
                 if (game.isPlayerTurn()) {
-                    columnStart = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
-                    rowStart = scanner.nextInt() - 1;
+                    Field field = gui.lastClickedField;
+                    while (field.equals(gui.lastClickedField)) {
+                        try {
+                            gui.fieldChangedLatch.await();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    columnStart = gui.lastClickedField.getColIndex();
+                    rowStart = gui.lastClickedField.getRowIndex();
                 } else {
                     columnStart = client.din.readInt();
                     rowStart = client.din.readInt();
@@ -110,9 +118,17 @@ public Client() throws IOException {
                 }
                 while (true) {
                     if (game.isPlayerTurn()) {
-                        columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
-                        if (columnMove == 23) break;
-                        rowMove = scanner.nextInt() - 1;
+                        Field field = gui.lastClickedField;
+                        while (field.equals(gui.lastClickedField)) {
+                            try {
+                                gui.fieldChangedLatch.await();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        columnMove = gui.lastClickedField.getColIndex();
+                        rowMove = gui.lastClickedField.getRowIndex();
+                        System.out.println("klopik");
                     } else {
                         columnMove = client.din.readInt();
                         if (columnMove == 23) break;
