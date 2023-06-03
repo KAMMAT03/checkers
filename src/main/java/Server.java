@@ -51,7 +51,7 @@ public class Server {
                     System.out.println("kloc");
                     columnStart = field.getColIndex();
                     rowStart = field.getRowIndex();
-
+                //    if (columnMove == 23) break; XD
 
                     dout.writeInt(columnStart);
 //                    dout.flush();
@@ -67,15 +67,24 @@ public class Server {
                     msg2 = din.readUTF();
                     System.out.println(msg2);
                     while (true) {
-                        columnMove = (int) Character.toUpperCase(scanner.next().charAt(0)) - 65;
-                        dout.writeInt(columnMove);
-//                        dout.flush();
-                        if (columnMove == 23) {
-                            break;
+                        Field field = gui.lastClickedField;
+                        while (field.equals(gui.lastClickedField)) {
+                            try {
+                                gui.fieldChangedLatch.await();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        rowMove = scanner.nextInt() - 1;
-                        dout.writeInt(rowMove);
-                        dout.flush();
+
+                        System.out.println("kloc");
+                        columnMove = field.getColIndex();
+                        rowMove = field.getRowIndex();
+                //        if (columnMove == 23) {break;} XD
+                        dout.writeInt(columnStart);
+//                    dout.flush();
+                        dout.writeInt(rowStart);
+//                    dout.flush();
+                        break;
                     }
                     turn = din.readBoolean();
                 }
