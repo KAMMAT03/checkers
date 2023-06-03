@@ -40,7 +40,7 @@ public class Server {
                 System.out.println(msg1);
                 while (true) {
                     Field field = gui.lastClickedField;
-                    while (field.equals(gui.lastClickedField)) {}
+                    while (field.equals(gui.lastClickedField)) {System.out.println(gui.lastClickedField);System.out.println(field);}
                     System.out.println("kloc");
                     columnStart = field.getColIndex();
                     rowStart = field.getRowIndex();
