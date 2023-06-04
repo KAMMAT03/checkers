@@ -29,7 +29,6 @@ public class Server {
             while (board.equals("")) {
                 board = din.readUTF();
             }
-            System.out.println(board);
             playerTurn = din.readBoolean();
             if (playerTurn) {
                 System.out.println("Ruch białych, czekaj na swój ruch");
@@ -47,8 +46,6 @@ public class Server {
                             e.printStackTrace();
                         }
                     }
-
-                    System.out.println("kloc");
                     columnStart = field.getColIndex();
                     rowStart = field.getRowIndex();
                 //    if (columnMove == 23) break; XD
@@ -75,8 +72,6 @@ public class Server {
                                 e.printStackTrace();
                             }
                         }
-
-                        System.out.println("kloc");
                         columnMove = field.getColIndex();
                         rowMove = field.getRowIndex();
                 //        if (columnMove == 23) {break;} XD

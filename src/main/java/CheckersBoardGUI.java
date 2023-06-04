@@ -59,7 +59,7 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         }
     }
 
-    private void updateBoardState(Board board) {
+    public void updateBoardState(Board board) {
         Map<Integer, Field> fieldsWithWhite = board.getFieldsWithWhite();
         Map<Integer, Field> fieldsWithBlack = board.getFieldsWithBlack();
 
