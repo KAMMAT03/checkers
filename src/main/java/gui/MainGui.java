@@ -19,6 +19,10 @@ public class MainGui {
         frame = new JFrame("Checkers");
         mainMenuPanel = new JPanel();
 
+//         Opcja do rozwazenia
+//        mainMenuPanel = new ImagePanel(new ImageIcon("goodframe.png").getImage().getScaledInstance(400, 500,Image.SCALE_DEFAULT));
+
+
         // Frame Configuration
         frame.setSize(500, 500);
         frame.add(mainMenuPanel, BorderLayout.CENTER);
