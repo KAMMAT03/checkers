@@ -133,9 +133,7 @@ public class Server {
         board.setWhite(fieldsWithWhite);
         board.setBlack(fieldsWithBlack);
 
-        for (int i =0;i<fieldsWithWhite.size();i++) {
-            System.out.println(fieldsWithWhite.get(i));
-        }
+
         System.out.println("po");
         return board;
     }
