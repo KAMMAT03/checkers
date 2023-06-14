@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 public class Piece implements Serializable {
     private boolean isDame = false; // true - jest damką, false - jest zwykłym pionkiem
-    private boolean color; // true - biały, false - czarny
+    boolean color; // true - biały, false - czarny
     private Field field; // referencja do pola na krórym stoi pionek
     private int i;
     private int j;

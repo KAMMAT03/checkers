@@ -123,7 +123,7 @@ public class Board implements Serializable {
 
     String displayBoard() {
         StringBuilder sb = new StringBuilder();
-        sb.append("  ");
+        sb.append(" ");
         for (int i = 0; i < n; i++) {
             sb.append(" ").append((char) ('A' + i));
         }
@@ -133,7 +133,7 @@ public class Board implements Serializable {
 
         for (int i = 0; i < n; i++) {
             if (i + 1 < 10) {
-                sb.append(i+1).append(" ");
+                //sb.append(i+1).append("");
             } else {
                 sb.append(i + 1);
             }
@@ -146,14 +146,13 @@ public class Board implements Serializable {
                         sb.append(" ").append(field.getPiece().getSymbol());
                     }
                 } else {
-                    sb.append("  ");
+                    sb.append("");
                 }
             }
-                sb.append("  ").append(i + 1).append(" ");
                 sb.append("\n");
 
         }
-        sb.append("  ");
+        sb.append(" ");
         for (int i = 0; i < n; i++) {
             sb.append(" ").append((char) ('A' + i));
         }
@@ -166,6 +165,9 @@ public class Board implements Serializable {
     }
     public void setBlack(Map<Integer, Field> fieldsWithBlack){
         this.fieldsWithBlack = fieldsWithBlack;
+    }
+    public void setBoard(Field[][] fields){
+        board = fields;
     }
 
 }
