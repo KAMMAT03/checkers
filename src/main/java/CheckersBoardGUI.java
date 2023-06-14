@@ -50,7 +50,6 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
 
         updateBoardState(board);
     }
-
     private Color getSquareColor(int row, int col) {
         if ((row + col) % 2 == 0) {
             return Color.WHITE;

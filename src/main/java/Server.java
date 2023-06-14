@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 //TODO Czemu to wyrzuca blad po rozłączeniu Clienta?
 public class Server {
     public static void main(String[] args) throws Exception {

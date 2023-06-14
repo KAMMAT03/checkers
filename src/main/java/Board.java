@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Board implements Serializable {
 
-    public int n; //wielkość planszy (n x n)
+    private int n; //wielkość planszy (n x n)
     private Field[][] board; //tablica wszystkich pól
 
     private Map<Integer, Piece> white; //lista białych pionków
