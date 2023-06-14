@@ -10,8 +10,8 @@ public class MainGui extends JFrame implements ActionListener {
     private JFrame frame;
     private JPanel mainMenuPanel;
     private JPanel difficultyMenuPanel;
-    private static final int BOARD_SIZE = 8;
-    private static final int SQUARE_SIZE = 70;
+    private static int BOARD_SIZE = 8;      // default value
+    private static int SQUARE_SIZE = 70;    // default value
     public Field lastClickedField;
     private JButton[][] squares;
     private JPanel boardPanel;
@@ -79,8 +79,6 @@ public class MainGui extends JFrame implements ActionListener {
         difficultyMenuPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         difficultyMenuPanel.setLayout(new GridLayout(5, 1));
 
-
-
         // Label Configuration
         JLabel label = new JLabel("Choose board size");
         label.setHorizontalAlignment(JLabel.CENTER);
@@ -116,12 +114,42 @@ public class MainGui extends JFrame implements ActionListener {
 
         buttonClassic.addActionListener(e -> {
             // Set board size to classic (10x10)
-            // Do something
+            BOARD_SIZE = 10;
+            SQUARE_SIZE = 60;
+
+            lastClickedField = new Field(-1, -1, new Object());
+            setTitle("Checkers");
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(BOARD_SIZE * SQUARE_SIZE, BOARD_SIZE * SQUARE_SIZE);
+            setLayout(new BorderLayout());
+
+            boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+            squares = new JButton[BOARD_SIZE][BOARD_SIZE];
+
+            initializeBoard();
+
+            add(boardPanel, BorderLayout.CENTER);
+            setVisible(true);
         });
 
         buttonBig.addActionListener(e -> {
             // Set board size to big (12x12)
-            // Do something
+            BOARD_SIZE = 12;
+            SQUARE_SIZE = 60;
+
+            lastClickedField = new Field(-1, -1, new Object());
+            setTitle("Checkers");
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(BOARD_SIZE * SQUARE_SIZE, BOARD_SIZE * SQUARE_SIZE);
+            setLayout(new BorderLayout());
+
+            boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+            squares = new JButton[BOARD_SIZE][BOARD_SIZE];
+
+            initializeBoard();
+
+            add(boardPanel, BorderLayout.CENTER);
+            setVisible(true);
         });
 
         buttonBack.addActionListener(e -> {
