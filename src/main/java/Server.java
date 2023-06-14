@@ -104,6 +104,7 @@ public class Server {
             }
         }
     }
+
     public static Board makeBoardObject(String str) {
         // Usunięcie zbędnych spacji na początku i końcu
 
