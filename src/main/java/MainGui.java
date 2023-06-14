@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -10,6 +11,9 @@ public class MainGui extends JFrame implements ActionListener {
     private JFrame frame;
     private JPanel mainMenuPanel;
     private JPanel difficultyMenuPanel;
+    private JPanel loadMenuPanel;
+    private JTextField textField;
+
     private static int BOARD_SIZE = 8;      // default value
     private static int SQUARE_SIZE = 70;    // default value
     public Field lastClickedField;
@@ -63,7 +67,7 @@ public class MainGui extends JFrame implements ActionListener {
         });
         button2.addActionListener(e -> {
             // Load game from
-            // loadGameFromFile();
+            showLoadMenu();
         });
         button3.addActionListener(e -> {
             // Exit
@@ -170,6 +174,60 @@ public class MainGui extends JFrame implements ActionListener {
         frame.revalidate();
         frame.repaint();
     }
+    private void showLoadMenu() {
+        // Submenu panel
+        loadMenuPanel = new JPanel();
+        loadMenuPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        loadMenuPanel.setLayout(new GridLayout(5, 1));
+
+        // Label Configuration
+        JLabel label = new JLabel("Load file:");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Arial Unicode MS", Font.BOLD, 40));
+        loadMenuPanel.add(label, BorderLayout.CENTER);
+
+        // Text Field Configuration
+        JTextField textField = new JTextField();
+        textField.setEditable(false);
+
+        JButton buttonBack = new JButton("Back");
+        buttonBack.setFont(new Font("Arial Unicode MS", Font.PLAIN, 18));
+        JButton buttonChooseFile = new JButton("Choose file:");
+        buttonChooseFile.setFont(new Font("Arial Unicode MS", Font.PLAIN, 18));
+        JButton buttonLoad = new JButton("Load and play");
+        buttonLoad.setFont(new Font("Arial Unicode MS", Font.PLAIN, 18));
+
+        buttonBack.addActionListener(e -> {
+            // Returns to main menu
+            frame.remove(loadMenuPanel); // Delete submenu panel from frame
+            frame.add(mainMenuPanel); // Add main menu panel to frame
+            frame.revalidate();
+            frame.repaint();
+        });
+        buttonChooseFile.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                textField.setText(selectedFile.getAbsolutePath());
+            }
+        });
+        buttonLoad.addActionListener(e -> {
+            FileManager fileManager = new FileManager();
+            fileManager.loadGameState(textField.getSelectedText());
+            Game game = fileManager.loadGameState(textField.getSelectedText());
+        });
+
+        loadMenuPanel.add(textField);
+        loadMenuPanel.add(buttonChooseFile);
+        loadMenuPanel.add(buttonLoad);
+        loadMenuPanel.add(buttonBack);
+
+        frame.remove(mainMenuPanel); // Delete main menu panel from frame
+        frame.add(loadMenuPanel); // Add submenu panel to frame
+        frame.revalidate();
+        frame.repaint();
+    }
 
     private void updateBoardState(Board board) {
         Map<Integer, Field> fieldsWithWhite = board.getFieldsWithWhite();
@@ -231,6 +289,37 @@ public class MainGui extends JFrame implements ActionListener {
     }
 
     private void initializeBoard() {
+        if (squares == null) {
+            squares = new JButton[BOARD_SIZE][BOARD_SIZE]; // Initialize the squares array
+        }
+
+        Board board = new Board(BOARD_SIZE);
+
+        boardPanel.removeAll(); // Remove existing components from the boardPanel
+
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                if (squares[row][col] == null) {
+                    squares[row][col] = new JButton();
+                }
+
+                squares[row][col].setPreferredSize(new Dimension(SQUARE_SIZE, SQUARE_SIZE));
+                squares[row][col].setBackground(getSquareColor(row, col));
+
+                Field field = board.getFieldByIndex(row, col);
+                squares[row][col].putClientProperty("field", field); // Associate Field object with the button
+
+                squares[row][col].addActionListener(this); // Add ActionListener to each button
+                boardPanel.add(squares[row][col]);
+            }
+        }
+
+        updateBoardState(board);
+
+        frame.revalidate();
+        frame.repaint();
+    }
+    private void initializeBoardFromLoad() {
         if (squares == null) {
             squares = new JButton[BOARD_SIZE][BOARD_SIZE]; // Initialize the squares array
         }
