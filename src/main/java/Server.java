@@ -118,15 +118,15 @@ public class Server {
         Field[][] fields = new Field[8][8]; //to change
         int index =0;
         for (int i = 1; i < rows.length - 1; i++) {
-            for (int j = 0; j < rows[i].length()-1; j++) {
+            for (int j = 0; j < rows[i].length(); j++) {
                 char toCheck = rows[i].charAt(j);
                 Field field = new Field(i-1,  j- 1, null);
                 if (toCheck == 'w') {
-                    fieldsWithWhite.put(i * j, field);
+                    fieldsWithWhite.put(index, field);
                     index++;
                 }
                 if (toCheck == 'b') {
-                    fieldsWithBlack.put(i * j, field);
+                    fieldsWithBlack.put(index, field);
                     index ++;
                 }
             }
@@ -134,7 +134,9 @@ public class Server {
         board.setWhite(fieldsWithWhite);
         board.setBlack(fieldsWithBlack);
 
-
+        for (int i =0;i<fieldsWithWhite.size();i++) {
+            System.out.println(fieldsWithWhite.get(i));
+        }
         System.out.println("po");
         return board;
     }
