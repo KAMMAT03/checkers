@@ -115,12 +115,12 @@ public class MainGui extends JFrame implements ActionListener {
         });
 
         buttonClassic.addActionListener(e -> {
-            // Set board size to classic
+            // Set board size to classic (10x10)
             // Do something
         });
 
         buttonBig.addActionListener(e -> {
-            // Set board size to big
+            // Set board size to big (12x12)
             // Do something
         });
 
