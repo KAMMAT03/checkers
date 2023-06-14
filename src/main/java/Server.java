@@ -39,6 +39,7 @@ public class Server {
                 System.out.println(msg1);
                 while (true) {
                     Field field = gui.lastClickedField;
+
                     while (field.equals(gui.lastClickedField)) {
                         try {
                             gui.fieldChangedLatch.await();
@@ -46,9 +47,9 @@ public class Server {
                             e.printStackTrace();
                         }
                     }
-                    columnStart = field.getColIndex();
-                    rowStart = field.getRowIndex();
-                //    if (columnMove == 23) break; XD
+                    columnStart = gui.lastClickedField.getColIndex();
+                    rowStart = gui.lastClickedField.getRowIndex();
+
 
                     dout.writeInt(columnStart);
 //                    dout.flush();
@@ -72,8 +73,8 @@ public class Server {
                                 e.printStackTrace();
                             }
                         }
-                        columnMove = field.getColIndex();
-                        rowMove = field.getRowIndex();
+                        columnStart = gui.lastClickedField.getColIndex();
+                        rowStart = gui.lastClickedField.getRowIndex();
                 //        if (columnMove == 23) {break;} XD
                         dout.writeInt(columnStart);
 //                    dout.flush();

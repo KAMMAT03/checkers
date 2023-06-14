@@ -121,6 +121,7 @@ public Client() throws IOException {
                 }
                 while (true) {
                     if (game.isPlayerTurn()) {
+
                         Field field = gui.lastClickedField;
                         while (field.equals(gui.lastClickedField)) {
                             try {
