@@ -161,5 +161,11 @@ public class Board implements Serializable {
         return sb.toString();
     }
 
+    public void setWhite(Map<Integer, Field> fieldsWithWhite){
+        this.fieldsWithWhite = fieldsWithWhite;
+    }
+    public void setBlack(Map<Integer, Field> fieldsWithBlack){
+        this.fieldsWithBlack = fieldsWithBlack;
+    }
 
 }

@@ -2,6 +2,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 //TODO Czemu to wyrzuca blad po rozłączeniu Clienta?
 public class Server {
@@ -29,6 +31,11 @@ public class Server {
             while (board.equals("")) {
                 board = din.readUTF();
             }
+
+            Board boardToPrint = makeBoardObject(board);
+            System.out.println("chuj");
+
+
             playerTurn = din.readBoolean();
             if (playerTurn) {
                 System.out.println("Ruch białych, czekaj na swój ruch");
@@ -92,4 +99,32 @@ public class Server {
             }
         }
     }
+    public static Board makeBoardObject(String str) {
+        // Usunięcie zbędnych spacji na początku i końcu
+
+        // Podział na wiersze na podstawie znaku nowej linii
+        System.out.println("Tera moje");
+        String[] rows = str.split("\n");
+        int size = (rows[0].length() - 1) / 2;
+        Board board = new Board(size);
+        Map<Integer, Field> fieldsWithWhite = new HashMap<>();
+        Map<Integer, Field> fieldsWithBlack = new HashMap<>();
+        for (int i = 1; i < rows.length - 1; i++) {
+            for (int j = 0; j < size; j++) {
+                Field field = new Field(j, i - 1, null);
+                if (rows[i].charAt(j) == 'w') {
+                    fieldsWithWhite.put(i * j, field);
+                    if (rows[i].charAt(j) == 'w') {
+                        fieldsWithBlack.put(i * j, field);
+                    }
+                }
+            }
+        }
+        board.setWhite(fieldsWithWhite);
+        board.setBlack(fieldsWithBlack);
+
+        board.displayBoard();
+        return board;
+    }
+
 }
