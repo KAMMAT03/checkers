@@ -24,7 +24,6 @@ public Client() throws IOException {
 
         printMenu();
         int choice = scanner.nextInt();
-//            choice = ezGui.init();
             switch (choice) {
                 case 1:
                     break;
@@ -76,6 +75,7 @@ public Client() throws IOException {
             while (true) {
                 int id;
                 if (game.isPlayerTurn()) {
+
                     Field field = gui.lastClickedField;
                     while (field.equals(gui.lastClickedField)) {
                         try {
@@ -84,6 +84,7 @@ public Client() throws IOException {
                             e.printStackTrace();
                         }
                     }
+
                     columnStart = gui.lastClickedField.getColIndex();
                     rowStart = gui.lastClickedField.getRowIndex();
                 } else {
@@ -130,7 +131,6 @@ public Client() throws IOException {
                         }
                         columnMove = gui.lastClickedField.getColIndex();
                         rowMove = gui.lastClickedField.getRowIndex();
-                        break;
                     } else {
                         columnMove = client.din.readInt();
                         rowMove = client.din.readInt();
