@@ -106,27 +106,40 @@ public class Server {
         // Usunięcie zbędnych spacji na początku i końcu
 
         // Podział na wiersze na podstawie znaku nowej linii
+        System.out.println(str);
         System.out.println("Tera moje");
         String[] rows = str.split("\n");
-        int size = (rows[0].length() - 1) / 2;
+        int size = rows[2].length();
         Board board = new Board(size);
         Map<Integer, Field> fieldsWithWhite = new HashMap<>();
         Map<Integer, Field> fieldsWithBlack = new HashMap<>();
+        Field[][] fields = new Field[8][8]; //to change
+        int index =0;
         for (int i = 1; i < rows.length - 1; i++) {
-            for (int j = 0; j < size; j++) {
-                Field field = new Field(j, i - 1, null);
-                if (rows[i].charAt(j) == 'w') {
-                    fieldsWithWhite.put(i * j, field);
-                    if (rows[i].charAt(j) == 'w') {
+            for (int j = 0; j < rows[i].length()-1; j++) {
+                for (int j = 0; j < rows[i].length(); j++) {
+                    char toCheck = rows[i].charAt(j);
+                    Field field = new Field(i-1,  j- 1, null);
+                    if (toCheck == 'w') {
+                        fieldsWithWhite.put(i * j, field);
+                        fieldsWithWhite.put(index, field);
+                        index++;
+                    }
+                    if (toCheck == 'b') {
                         fieldsWithBlack.put(i * j, field);
+                        fieldsWithBlack.put(index, field);
+                        index ++;
                     }
                 }
-            }
-        }
-        board.setWhite(fieldsWithWhite);
-        board.setBlack(fieldsWithBlack);
+                board.setWhite(fieldsWithWhite);
+                board.setBlack(fieldsWithBlack);
 
-        board.displayBoard();
-        return board;
-    }
-}
+
+                for (int i =0;i<fieldsWithWhite.size();i++) {
+                    System.out.println(fieldsWithWhite.get(i));
+                }
+                System.out.println("po");
+                return board;
+            }
+
+        }
