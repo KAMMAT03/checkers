@@ -24,7 +24,6 @@ public Client() throws IOException {
 
         printMenu();
         int choice = scanner.nextInt();
-//            choice = ezGui.init();
             switch (choice) {
                 case 1:
                     break;
@@ -76,6 +75,7 @@ public Client() throws IOException {
             while (true) {
                 int id;
                 if (game.isPlayerTurn()) {
+
                     Field field = gui.lastClickedField;
                     while (field.equals(gui.lastClickedField)) {
                         try {
@@ -84,6 +84,7 @@ public Client() throws IOException {
                             e.printStackTrace();
                         }
                     }
+
                     columnStart = gui.lastClickedField.getColIndex();
                     rowStart = gui.lastClickedField.getRowIndex();
                 } else {
@@ -99,7 +100,9 @@ public Client() throws IOException {
                         client.dout.flush();
                         break;
                     }
+
                 }
+
                 if (game.isPlayerTurn()) {
                     System.out.println("Wybrano zly pionek, prosze wybrac ponownie");
                 } else {
@@ -118,6 +121,7 @@ public Client() throws IOException {
                 }
                 while (true) {
                     if (game.isPlayerTurn()) {
+
                         Field field = gui.lastClickedField;
                         while (field.equals(gui.lastClickedField)) {
                             try {
@@ -128,10 +132,8 @@ public Client() throws IOException {
                         }
                         columnMove = gui.lastClickedField.getColIndex();
                         rowMove = gui.lastClickedField.getRowIndex();
-                        System.out.println("klopik");
                     } else {
                         columnMove = client.din.readInt();
-                        if (columnMove == 23) break;
                         rowMove = client.din.readInt();
                     }
                     index = rowMove + 100 * columnMove;
@@ -139,8 +141,10 @@ public Client() throws IOException {
                     if (indexList.size() == 1) {
                         endMove = game.getBoard().getFieldByIndex(rowMove, columnMove);
                     }
+                    break;
                 }
                 game.move(game.getBoard().getFieldByIndex(rowStart, columnStart), endMove, indexList, game.getBoard());
+                gui.updateBoardState(game.getBoard());
                 indexList.clear();
                 if (!color) {
                     boolean msgBool = turn == game.getPlayerTurn();

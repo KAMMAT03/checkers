@@ -41,7 +41,6 @@ public class Field implements Serializable {
     public List<Integer> getPossibleMoves() {
         return possibleMoves;
     }
-
     public void setPossibleMoves(List<Integer> possibleMoves) {
         this.possibleMoves = possibleMoves;
     }
@@ -148,5 +147,14 @@ public class Field implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(rowIndex, colIndex, id);
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "id=" + id +
+                "col " + colIndex+
+                "row " + rowIndex+
+                '}';
     }
 }

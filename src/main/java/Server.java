@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -32,9 +33,16 @@ public class Server {
             while (board.equals("")) {
                 board = din.readUTF();
             }
-            makeBoardObject(board);
-            System.out.println("chuj");
-            System.out.println(board);
+            Board boardToShow = makeBoardObject(board);
+            for (int i =0;i<boardToShow.getFieldsWithWhite().size();i++) {
+                System.out.println(boardToShow.getFieldsWithWhite().get(i));
+            }
+
+            gui.updateBoardState(boardToShow);
+            System.out.println("casda");
+
+
+
             playerTurn = din.readBoolean();
             if (playerTurn) {
                 System.out.println("Ruch białych, czekaj na swój ruch");
