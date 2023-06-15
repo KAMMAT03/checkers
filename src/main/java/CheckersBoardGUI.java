@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch;
 public class CheckersBoardGUI extends JFrame implements ActionListener {
 
     public CountDownLatch fieldChangedLatch = new CountDownLatch(1);
-    private static final int BOARD_SIZE = 8;
+    private static final int BOARD_SIZE = 12;
     private static final int SQUARE_SIZE = 70;
     public Field lastClickedField;
 
@@ -90,6 +90,7 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         } else if (symbol.equals("W")) {
             return "whitepawnD.png";
         }
+
         return null;
     }
 
