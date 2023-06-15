@@ -45,6 +45,7 @@ public class Server {
                 System.out.println(msg1);
                 while (true) {
                     Field field = gui.lastClickedField;
+
                     while (field.equals(gui.lastClickedField)) {
                         try {
                             gui.fieldChangedLatch.await();
@@ -52,11 +53,9 @@ public class Server {
                             e.printStackTrace();
                         }
                     }
+                    columnStart = gui.lastClickedField.getColIndex();
+                    rowStart = gui.lastClickedField.getRowIndex();
 
-                    System.out.println("kloc");
-                    columnStart = field.getColIndex();
-                    rowStart = field.getRowIndex();
-                    //    if (columnMove == 23) break; XD
 
                     dout.writeInt(columnStart);
 //                    dout.flush();
@@ -80,17 +79,18 @@ public class Server {
                                 e.printStackTrace();
                             }
                         }
-
-                        System.out.println("kloc");
-                        columnMove = field.getColIndex();
-                        rowMove = field.getRowIndex();
-                        //        if (columnMove == 23) {break;} XD
+                        columnStart = gui.lastClickedField.getColIndex();
+                        rowStart = gui.lastClickedField.getRowIndex();
+                //        if (columnMove == 23) {break;} XD
                         dout.writeInt(columnStart);
 //                    dout.flush();
                         dout.writeInt(rowStart);
 //                    dout.flush();
                         break;
                     }
+                    boardToShow = makeBoardObject(board);
+                    gui.updateBoardState(boardToShow);
+                    System.out.println("casda");
                     turn = din.readBoolean();
                 }
                 gameOver = din.readBoolean();
@@ -113,29 +113,26 @@ public class Server {
         Board board = new Board(size);
         Map<Integer, Field> fieldsWithWhite = new HashMap<>();
         Map<Integer, Field> fieldsWithBlack = new HashMap<>();
-        Field[][] fields = new Field[8][8]; //to change
-        int index = 0;
-        for (int i = 1; i < rows.length - 1; i++) {
+        int index =0;
+        for (int i = 0; i < rows.length; i++) {
             for (int j = 0; j < rows[i].length(); j++) {
                 char toCheck = rows[i].charAt(j);
-                Field field = new Field(i - 1, j - 1, null);
+                Field field = new Field(i-1,  j, null);
                 if (toCheck == 'w') {
                     fieldsWithWhite.put(index, field);
                     index++;
                 }
                 if (toCheck == 'b') {
                     fieldsWithBlack.put(index, field);
-                    index++;
+                    index ++;
                 }
             }
         }
         board.setWhite(fieldsWithWhite);
         board.setBlack(fieldsWithBlack);
 
-        for (int i = 0; i < fieldsWithWhite.size(); i++) {
-            System.out.println(fieldsWithWhite.get(i));
-        }
         System.out.println("po");
         return board;
     }
+
 }
