@@ -58,6 +58,19 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         }
     }
 
+    private String getPieceSymbol(String symbol) {
+        if (symbol.equals("b")) {
+            return "blackpawn.png";
+        } else if (symbol.equals("w")) {
+            return "whitepawn.png";
+        } else if (symbol.equals("B")) {
+            return "blackpawnD.png";
+        } else if (symbol.equals("W")) {
+            return "whitepawnD.png";
+        }
+        return null;
+    }
+
     private void updateBoardState(Board board) {
         Map<Integer, Field> fieldsWithWhite = board.getFieldsWithWhite();
         Map<Integer, Field> fieldsWithBlack = board.getFieldsWithBlack();
@@ -75,6 +88,7 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
                         String symbol = field.getPiece().getSymbol();
                         square.setText(symbol);
                         square.setBackground(getPieceColor(symbol));
+                        square.setIcon(new ImageIcon(new ImageIcon(getPieceSymbol(symbol)).getImage().getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH)));
                     }
 
                     if (fieldsWithWhite.containsValue(field)) {
