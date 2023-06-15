@@ -120,7 +120,7 @@ public class Board implements Serializable {
 
     String displayBoard() {
         StringBuilder sb = new StringBuilder();
-        sb.append("  ");
+        sb.append(" ");
         for (int i = 0; i < n; i++) {
             sb.append(" ").append((char) ('A' + i));
         }
@@ -130,38 +130,41 @@ public class Board implements Serializable {
 
         for (int i = 0; i < n; i++) {
             if (i + 1 < 10) {
-                sb.append(i+1).append(" ");
+                //sb.append(i+1).append("");
             } else {
-                sb.append(i + 1);
+                //sb.append(i + 1);
             }
             for (int j = 0; j < n; j++) {
                 if ((i + j) % 2 == 0) {
                     Field field = getFieldByIndex(i, j);
                     if (field.getPiece() == null) {
-                        sb.append(" .");
+                        sb.append(".");
                     } else {
-                        sb.append(" ").append(field.getPiece().getSymbol());
+                        sb.append("").append(field.getPiece().getSymbol());
                     }
                 } else {
-                    sb.append("  ");
+                    sb.append(" ");
                 }
             }
-                sb.append("  ").append(i + 1).append(" ");
                 sb.append("\n");
 
         }
-        sb.append("  ");
+        sb.append("");
         for (int i = 0; i < n; i++) {
             sb.append(" ").append((char) ('A' + i));
         }
         sb.append("\n");
         return sb.toString();
     }
+
     public void setWhite(Map<Integer, Field> fieldsWithWhite){
         this.fieldsWithWhite = fieldsWithWhite;
     }
     public void setBlack(Map<Integer, Field> fieldsWithBlack){
         this.fieldsWithBlack = fieldsWithBlack;
+    }
+    public void setBoard(Field[][] fields){
+        board = fields;
     }
 
 }

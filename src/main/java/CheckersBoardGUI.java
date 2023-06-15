@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -26,6 +27,7 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         squares = new JButton[BOARD_SIZE][BOARD_SIZE];
 
         initializeBoard();
+        initMenu();
 
         add(boardPanel, BorderLayout.CENTER);
         setVisible(true);
@@ -33,7 +35,6 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
 
     private void initializeBoard() {
         Board board = new Board(BOARD_SIZE);
-
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 squares[row][col] = new JButton();
@@ -49,6 +50,27 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
         }
 
         updateBoardState(board);
+    }
+    private void initMenu(){
+
+        FileManager manager = new FileManager();
+        JMenuBar menu = new JMenuBar();
+        JMenu file = new JMenu("Menu");
+        JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        saveItem.addActionListener(e -> {
+           // manager.saveGameState(/*path*/);
+        });
+
+        exitItem.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        file.add(saveItem);
+        file.add(exitItem);
+        menu.add(file);
+        setJMenuBar(menu);
     }
     private Color getSquareColor(int row, int col) {
         if ((row + col) % 2 == 0) {
