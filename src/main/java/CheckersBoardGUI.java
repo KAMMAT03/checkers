@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -82,13 +81,13 @@ public class CheckersBoardGUI extends JFrame implements ActionListener {
 
     private String getPieceSymbol(String symbol) {
         if (symbol.equals("b")) {
-            return "/home/s0meone/APRO2/apro2_23l_pro_cz_warcaby/src/main/resources/Bp.png";
+            return "Bp.png";
         } else if (symbol.equals("w")) {
-            return "/home/s0meone/APRO2/apro2_23l_pro_cz_warcaby/src/main/resources/Wp.png";
+            return "Wp.png";
         } else if (symbol.equals("B")) {
-            return "/home/s0meone/APRO2/apro2_23l_pro_cz_warcaby/src/main/resources/Bq.png";
+            return "Bq.png";
         } else if (symbol.equals("W")) {
-            return "/home/s0meone/APRO2/apro2_23l_pro_cz_warcaby/src/main/resources/Wq.png";
+            return "Wq.png";
         }
 
         return null;

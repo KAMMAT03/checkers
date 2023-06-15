@@ -44,7 +44,7 @@ public class MainGui extends JFrame implements ActionListener {
         mainMenuPanel.setLayout(new GridLayout(4, 1));
 
         // Label Configuration
-        JLabel label = new JLabel("Checkerki");
+        JLabel label = new JLabel("Checkers");
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setFont(new Font("Arial Unicode MS", Font.BOLD, 40));
         mainMenuPanel.add(label, BorderLayout.CENTER);
